@@ -30,7 +30,7 @@ public class SecurityConfiguration {
 		http.csrf().disable()
 				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/registration**").permitAll()
 						.requestMatchers("/js/**").permitAll().requestMatchers("/css/**").permitAll()
-						.requestMatchers("/img/**").permitAll().requestMatchers("/**").permitAll())
+						.requestMatchers("/img/**").permitAll().anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/login").permitAll())
 				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
 		return http.build();
