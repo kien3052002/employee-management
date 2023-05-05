@@ -17,50 +17,31 @@ import employee.service.UserService;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
-	private  UserService userService;
-	
+	private UserService userService;
+
 	@GetMapping()
 	String viewUserPage(Model model) {
-		return findPaginated(1,"firstName", "asc", model);
+		List<User> listUsers = userService.getAllUsers();
+		model.addAttribute("listUsers", listUsers);
+		return "show_user";
 	}
-	
+
 	@GetMapping("/showFormForUpdate/{id}")
-	public String showFormForUpdate(@PathVariable ( value = "id") long id, Model model) {
-		
+	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
+
 		User user = userService.getUserById(id);
-		
+
 		model.addAttribute("employee", user);
 		return "update_user";
 	}
-	
+
 	@GetMapping("/deleteUser/{id}")
-	public String deleteEmployee(@PathVariable (value = "id") long id) {
-		
+	public String deleteEmployee(@PathVariable(value = "id") long id) {
+
 		this.userService.deleteUserById(id);
 		return "redirect:/";
 	}
-	
-	@GetMapping("/page/{pageNo}")
-	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
-			@RequestParam("sortField") String sortField,
-			@RequestParam("sortDir") String sortDir,
-			Model model) {
-		int pageSize = 1;
-		
-		Page<User> page = userService.findPaginated(pageNo, pageSize, sortField, sortDir);
-		List<User> listUsers = page.getContent();
-		
-		model.addAttribute("currentPage", pageNo);
-		model.addAttribute("totalPages", page.getTotalPages());
-		model.addAttribute("totalItems", page.getTotalElements());
-		
-		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
-		model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-		
-		model.addAttribute("listEmployees", listUsers);
-		return "show_user";
-	}
+
 }

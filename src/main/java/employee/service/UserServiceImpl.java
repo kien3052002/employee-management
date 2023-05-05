@@ -83,13 +83,4 @@ public class UserServiceImpl implements UserService{
 	public void deleteUserById(long id) {
 		this.userRepository.deleteById(id);
 	}
-	
-	@Override
-	public Page<User> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-			Sort.by(sortField).descending();
-		
-		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-		return this.userRepository.findAll(pageable);
-	}
 }

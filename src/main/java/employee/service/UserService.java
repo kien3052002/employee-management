@@ -14,5 +14,5 @@ public interface UserService extends UserDetailsService{
 	List<User> getAllUsers();
 	User getUserById(long id);
 	void deleteUserById(long id);
-	Page<User> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+
 }
