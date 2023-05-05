@@ -18,7 +18,16 @@ public class Employee {
 	@Column(name = "last_name")
 	private String lastName;
 	
+	@Column(name = "full_name")
+	private String fullName;
+	
 	@Column(name = "email")
 	private String email;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "department_id")
+	private Department department;
+	
+	private String position;
 	
 }
