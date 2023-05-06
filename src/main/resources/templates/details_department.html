@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Employee Management System</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Employee Management System</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<br>
+	<br>
+
+	<div class="container my-2">
+		<h1 th:text="${department.name}"></h1>
+		<br>
+		<br>
+		<h3 th:text="${department.desc}"></h3>
+		<br>
+		<hr>
+		<a th:href="@{/departments/updateDepartment/{id}(id=${department.id})}"
+							 class="btn btn-primary">Update</a>
+		<h3>Chief</h3>
+		<table th:if="${hasChief==true}" border="1" class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>
+						Full Name
+					</th>
+					<th>
+						Gender
+					</th>
+					<th>
+						Email
+					</th>
+					<th>
+						Position
+					</th>
+					<th sec:authorize="hasRole('ADMIN')"> Actions </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${chief.fullName}"></td>
+					<td th:text="${chief.gender}"></td>
+					<td th:text="${chief.email}"></td>
+					<td th:text="${chief.position}"></td>
+					<td> 
+						<a th:href="@{employees/detailsEmployee/{id}(id=${employee.id})}"
+							 class="btn btn-primary">Details</a>
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{employees/updateEmployee/{id}(id=${employee.id})}"
+							 class="btn btn-primary">Update</a>
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{employees/deleteEmployee/{id}(id=${employee.id})}"
+							 class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:unless="${hasChief==true}">Not Assigned</p>
+		
+		<h3>Employees</h3>
+		<table border="1" class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>
+						Full Name
+					</th>
+					<th>
+						Gender
+					</th>
+					<th>
+						Email
+					</th>
+					<th>
+						Position
+					</th>
+					<th sec:authorize="hasRole('ADMIN')"> Actions </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee : ${listEmployees}">
+					<td th:text="${employee.fullName}"></td>
+					<td th:text="${employee.gender}"></td>
+					<td th:text="${employee.email}"></td>
+					<td th:text="${employee.position}"></td>
+					<td> 
+						<a th:href="@{/employees/detailsEmployee/{id}(id=${employee.id})}"
+							 class="btn btn-primary">Details</a>
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{/employees/updateEmployee/{id}(id=${employee.id})}"
+							 class="btn btn-primary">Update</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</body>
+
+</html>

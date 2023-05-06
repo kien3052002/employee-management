@@ -78,9 +78,18 @@ public class DepartmentController {
 	
 	@GetMapping("/detailsDepartment/{id}")
 	public String showDetails(@PathVariable ( value = "id") long id, Model model) {
-		
+		List<Employee> employees = employeeService.getEmployeesByDepartment(id); 
 		Department department = departmentService.getDepartmentById(id);
+		Employee chief = departmentService.getChief(id);
+		int employeeNumber = employees.size();
+		Boolean hasChief;
+		if(chief == null) hasChief = false;
+		else hasChief = true;
+		model.addAttribute("hasChief", hasChief);
 		model.addAttribute("department", department);
+		model.addAttribute("listEmployees", employees);
+		model.addAttribute("chief",chief);
+		model.addAttribute("number", employeeNumber);
 		return "details_department";
 	}
 }

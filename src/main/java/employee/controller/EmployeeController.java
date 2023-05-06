@@ -47,6 +47,7 @@ public class EmployeeController {
 	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("department") long id) {
 		employee.setFullName(employee.getFirstName() + " " + employee.getLastName());
 		employee.setDepartment(departmentService.getDepartmentById(id));
+		employee.setPosition("Employee");
 		employeeService.saveEmployee(employee);
 		return "redirect:/employees";
 	}

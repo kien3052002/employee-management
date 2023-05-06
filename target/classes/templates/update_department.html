@@ -19,7 +19,10 @@
 			<!-- Add hidden form field to handle update -->
 			<input type="hidden" th:field="*{id}" />
 			
-			<input type="text" th:field="*{name}" class="form-control mb-4 col-4">
+			<label for="Name">Name</label>
+			<input type="text" th:field="*{name}" id="Name" class="form-control mb-4 col-4">
+			<label for="Description">Description</label>
+			<input type="text" th:field="*{desc}" id="Description" class="form-control mb-4 col-4">
 				
 				<button type="submit" class="btn btn-info col-2"> Update Department</button>
 		</form>

@@ -10,15 +10,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "departments")
-public class Department {
+@Table(name = "contracts")
+public class Contract {
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "description")
-	private String desc;
 }
