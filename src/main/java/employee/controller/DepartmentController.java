@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import employee.model.Department;
 import employee.model.Employee;
 import employee.service.DepartmentService;
+import employee.service.EmployeeService;
 
 @Controller
 @RequestMapping("/departments")
 public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;
-
+	
+	@Autowired 
+	private EmployeeService employeeService;
+	
 	@GetMapping()
 	String showDepartmentsPage(Model model) {
 		List<Department> listDepartments = departmentService.getAllDepartments();
@@ -63,9 +67,20 @@ public class DepartmentController {
 	
 	@GetMapping("/deleteDepartment/{id}")
 	public String deleteDepartment(@PathVariable (value = "id") long id) {
-		
+		List<Employee> employees = departmentService.getEmployees(id);
+		for(Employee employee : employees) {
+			employee.setDepartment(null);
+			employeeService.saveEmployee(employee);
+		}
 		this.departmentService.deleteDepartment(id);
-		return "redirect:/";
+		return "redirect:/departments";
 	}
 	
+	@GetMapping("/detailsDepartment/{id}")
+	public String showDetails(@PathVariable ( value = "id") long id, Model model) {
+		
+		Department department = departmentService.getDepartmentById(id);
+		model.addAttribute("department", department);
+		return "details_department";
+	}
 }

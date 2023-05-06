@@ -35,41 +35,9 @@
 	<br>
 
 	<div class="container my-2">
-		<h1>Users List</h1>
+		<h1>Employee</h1>
 
-		<br>
-		<br>
-		<table border="1" class="table table-striped table-responsive-md">
-			<thead>
-				<tr>
-					<th>
-
-						User First Name
-					</th>
-					<th>
-
-						User Last Name
-					</th>
-					<th>
-
-						User Email
-					</th>
-					<th> Actions </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="user : ${listUsers}">
-					<td th:text="${user.firstName}"></td>
-					<td th:text="${user.lastName}"></td>
-					<td th:text="${user.email}"></td>
-					<td> <a sec:authorize="hasRole('ADMIN')" th:href="@{users/updateUser/{id}(id=${user.id})}"
-							class="btn btn-primary">Update</a>
-						<a sec:authorize="hasRole('ADMIN')" th:href="@{users/deleteUser/{id}(id=${user.id})}"
-							class="btn btn-danger">Delete</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		
 	</div>
 </body>
 

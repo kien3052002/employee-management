@@ -31,7 +31,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/registration**").permitAll()
 						.requestMatchers("/js/**").permitAll().requestMatchers("/css/**").permitAll()
 						.requestMatchers("/img/**").permitAll().requestMatchers("/employees**").hasAnyRole("USER", "ADMIN")
-						.requestMatchers("/employees/**").hasAuthority("ADMIN").anyRequest().authenticated())
+						.requestMatchers("/employees/**").hasAuthority("ROLE_ADMIN").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/login").permitAll())
 				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
 		return http.build();

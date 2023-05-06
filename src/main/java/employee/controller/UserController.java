@@ -28,7 +28,7 @@ public class UserController {
 		return "show_user";
 	}
 
-	@GetMapping("/showFormForUpdate/{id}")
+	@GetMapping("/updateUser/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
 
 		User user = userService.getUserById(id);
@@ -41,7 +41,7 @@ public class UserController {
 	public String deleteEmployee(@PathVariable(value = "id") long id) {
 
 		this.userService.deleteUserById(id);
-		return "redirect:/";
+		return "redirect:/users";
 	}
 
 }
