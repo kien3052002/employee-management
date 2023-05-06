@@ -49,5 +49,5 @@ public class Employee {
 	private String phone;
 
 	@Column(name = "home_town")
-	private long hometown;
+	private String homeTown;
 }

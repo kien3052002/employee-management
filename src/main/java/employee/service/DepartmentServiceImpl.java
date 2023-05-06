@@ -52,7 +52,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 		if (optional.isPresent()) {
 			department = optional.get();
 		} else {
-			throw new RuntimeException(" Department not found for id :: " + id);
+			return null;
 		}
 		return department;
 	}

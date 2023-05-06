@@ -24,15 +24,18 @@
 			<input type="text" th:field="*{email}" id="Email" class="form-control mb-4 col-4">
 			<label for="Phone Number">Phone Number</label>
 			<input type="text" th:field="*{phone}" id="Phone Number" class="form-control mb-4 col-4">
+			<label for="Home Town">Home Town</label>
+			<input type="text" th:field="*{homeTown}" id="Home Town" class="form-control mb-4 col-4">
 
 			<label for="Male">Male</label>
 			<input type="radio" th:field="*{gender}" value="Male" id="Male">
 			<labe for="Female">Female</labe>
 			<input type="radio" th:field="*{gender}" value="Female" id="Female">
 			<br>
+			<label for="department">Department &nbsp;</label>
 			<select name="department">
 
-				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}"></option>
+				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}" th:selected="${d}==*{department}"></option>
 
 			</select>
 			<br>

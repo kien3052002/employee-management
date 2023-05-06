@@ -2,6 +2,7 @@ package employee.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,10 @@ public class EmployeeController {
 	public String showNewEmployeeForm(Model model) {
 		Employee employee = new Employee();
 		List<Department> departments = departmentService.getAllDepartments();
+		Department none = new Department();
+		none.setId(0);
+		none.setName("(Not Assigned)");
+		departments.add(0,none);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "new_employee";
@@ -57,8 +62,10 @@ public class EmployeeController {
 
 		Employee employee = employeeService.getEmployeeById(id);
 		List<Department> departments = departmentService.getAllDepartments();
-		Department currDepartment = employee.getDepartment();
-		model.addAttribute("currDepartment", currDepartment);
+		Department none = new Department();
+		none.setId(0);
+		none.setName("(Not Assigned)");
+		departments.add(0,none);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "update_employee";
