@@ -43,6 +43,10 @@ public class Employee {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "department_id")
 	private Department department;
+	
+	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+	private Contract contract;
 
 	private String gender;
 	private String position;
