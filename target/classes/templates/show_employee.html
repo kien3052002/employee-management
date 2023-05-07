@@ -50,6 +50,7 @@
 					<th>
 						Gender
 					</th>
+					<th>Date Of Birth</th>
 					<th>
 						Email
 					</th>
@@ -64,6 +65,7 @@
 					<td th:text="${employee.id}"></td>
 					<td th:text="${employee.fullName}"></td>
 					<td th:text="${employee.gender}"></td>
+					<td th:text="${employee.getStringFromDob()}"></td>
 					<td th:text="${employee.email}"></td>
 					<td th:if="${employee.department!=null}" th:text="${employee.department.name}"></td>
 					<td th:unless="${employee.department!=null}">Not Assigned</td>

@@ -1,6 +1,10 @@
 package employee.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,9 +49,34 @@ public class Employee {
 
 	@Column(name = "joined_date")
 	private Date joinedDate;
-	
+
 	private String phone;
 
 	@Column(name = "home_town")
 	private String homeTown;
+
+	public String[] getListFromDob() {
+		Date date = this.getDob();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String strDate = dateFormat.format(date).split(" ")[0];
+		String[] DoB = strDate.split("-");
+		return DoB;
+	}
+
+	public void setDobFromString(String day, String month, String year) throws ParseException {
+		if (day.length() < 2)
+			day = "0" + day;
+		if (month.length() < 2)
+			day = "0" + month;
+		String dob = year + "/" + month + "/" + day;
+		Date date = new SimpleDateFormat("yyyy/MM/dd").parse(dob);
+		this.setDob(date);
+	}
+
+	public String getStringFromDob() {
+		Date date = this.getDob();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String strDate = dateFormat.format(date).split(" ")[0];
+		return strDate;
+	}
 }

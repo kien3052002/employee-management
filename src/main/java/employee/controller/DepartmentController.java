@@ -63,6 +63,7 @@ public class DepartmentController {
 		}
 		for (Employee e : addList) {
 			e.setDepartment(department);
+			employeeService.saveEmployee(e);
 		}
 		departmentService.saveDepartment(department);
 		return "redirect:/";

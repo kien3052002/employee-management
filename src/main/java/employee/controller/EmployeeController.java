@@ -1,8 +1,11 @@
 package employee.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-
+import java.text.SimpleDateFormat;  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,14 +45,16 @@ public class EmployeeController {
 		Department none = new Department();
 		none.setId(0);
 		none.setName("(Not Assigned)");
-		departments.add(0,none);
+		departments.add(0, none);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "new_employee";
 	}
 
 	@PostMapping("/saveEmployee")
-	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("department") long id) {
+	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("department") long id,
+			@RequestParam("day") String day, @RequestParam("month") String month, @RequestParam("year") String year) throws ParseException{
+		employee.setDobFromString(day, month, year);
 		employee.setFullName(employee.getFirstName() + " " + employee.getLastName());
 		employee.setDepartment(departmentService.getDepartmentById(id));
 		employee.setPosition("Employee");
@@ -59,13 +64,15 @@ public class EmployeeController {
 
 	@GetMapping("/updateEmployee/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
-
+		
 		Employee employee = employeeService.getEmployeeById(id);
+		String[] dob = employee.getListFromDob();
 		List<Department> departments = departmentService.getAllDepartments();
 		Department none = new Department();
 		none.setId(0);
 		none.setName("(Not Assigned)");
-		departments.add(0,none);
+		departments.add(0, none);
+		model.addAttribute("dob", dob);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "update_employee";

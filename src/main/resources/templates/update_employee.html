@@ -26,6 +26,12 @@
 			<input type="text" th:field="*{phone}" id="Phone Number" class="form-control mb-4 col-4">
 			<label for="Home Town">Home Town</label>
 			<input type="text" th:field="*{homeTown}" id="Home Town" class="form-control mb-4 col-4">
+			<label for"day">Date Of Birth (DD/MM/YYY)</label>
+			<input type="text" name="day" id="day" class="form-control mb-4 col-4" th:value="${dob[2]}">
+			<label for"month">/</label>
+			<input type="text" name="month" id="month" class="form-control mb-4 col-4" th:value="${dob[1]}">
+			<label for"year">/</label>
+			<input type="text" name="year" id="year" class="form-control mb-4 col-4" th:value="${dob[0]}">
 
 			<label for="Male">Male</label>
 			<input type="radio" th:field="*{gender}" value="Male" id="Male">

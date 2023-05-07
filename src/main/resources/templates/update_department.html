@@ -59,6 +59,7 @@
 							<th>
 								Gender
 							</th>
+							<th>Date Of Birth</th>
 							<th>
 								Email
 							</th>
@@ -74,6 +75,7 @@
 							<td th:text="${employee.id}"></td>
 							<td th:text="${employee.fullName}"></td>
 							<td th:text="${employee.gender}"></td>
+							<td th:text="${employee.getStringFromDob()}"></td>
 							<td th:text="${employee.email}"></td>
 							<td th:text="${employee.position}"></td>
 							<td>
@@ -103,6 +105,7 @@
 							<th>
 								Gender
 							</th>
+							<th>Date Of Birth</th>
 							<th>
 								Email
 							</th>
@@ -114,10 +117,11 @@
 					</thead>
 					<tbody>
 						<tr th:each="employee : ${available}">
-							<td><input type="checkbox" name="toAdd" value="employee" /></td>
+							<td><input type="checkbox" name="toAdd" th:value="${employee.id}" /></td>
 							<td th:text="${employee.id}"></td>
 							<td th:text="${employee.fullName}"></td>
 							<td th:text="${employee.gender}"></td>
+							<td th:text="${employee.getStringFromDob()}"></td>
 							<td th:text="${employee.email}"></td>
 							<td th:text="${employee.position}"></td>
 							<td>
