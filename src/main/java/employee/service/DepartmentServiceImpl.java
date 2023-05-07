@@ -35,7 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 	@Override
 	public Employee getChief(long id) {
 		for (Employee e : this.getEmployees(id)) {
-			if(e.getPosition() == "Chief") return e;
+			if(e.getPosition().equals("Chief")) return e;
 		}
 		return null;
 	}

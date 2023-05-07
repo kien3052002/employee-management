@@ -44,30 +44,45 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td style="text-align:center;font-weight:bold;">Full name</td><td style="text-align:center;" th:text="${employee.fullName}"></td>
+					<td style="text-align:center;font-weight:bold;">Full name</td>
+					<td style="text-align:center;" th:text="${employee.fullName}"></td>
 				</tr>
 				<tr>
-					<td style="text-align:center;font-weight:bold;">Gender</td><td style="text-align:center;" th:text="${employee.gender}"></td>
+					<td style="text-align:center;font-weight:bold;">Gender</td>
+					<td style="text-align:center;" th:text="${employee.gender}"></td>
 				</tr>
 				<tr>
-					<td style="text-align:center;font-weight:bold;">Email</td><td style="text-align:center;" th:text="${employee.email}"></td>
+					<td style="text-align:center;font-weight:bold;">Email</td>
+					<td style="text-align:center;" th:text="${employee.email}"></td>
 				</tr>
 				<tr>
-					<td style="text-align:center;font-weight:bold;">Date of birth</td><td style="text-align:center;" th:text="${employee.getStringFromDob}"></td>
+					<td style="text-align:center;font-weight:bold;">Phone Number</td>
+					<td style="text-align:center;" th:text="${employee.phone}"></td>
 				</tr>
 				<tr>
-					<td style="text-align:center;font-weight:bold;">Department</td><td style="text-align:center;" th:if="${employee.department!=null}" th:text="${employee.department.name}"></td>
+					<td style="text-align:center;font-weight:bold;">Date of birth</td>
+					<td style="text-align:center;" th:text="${employee.getStringFromDob}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Home town</td>
+					<td style="text-align:center;" th:text="${employee.homeTown}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Department</td>
+					<td style="text-align:center;" th:if="${employee.department!=null}"
+						th:text="${employee.department.name}"></td>
 					<td style="text-align:center;" th:unless="${employee.department!=null}">Not Assigned</td>
 				</tr>
 				<tr>
-					<td style="text-align:center;font-weight:bold;">Position</td><td style="text-align:center;" th:text="${employee.position}"></td>
-				</tr>
-				<tr>
-					<td style="text-align:center;font-weight:bold;">Home town</td><td style="text-align:center;" th:text="${employee.homeTown}"></td>
+					<td style="text-align:center;font-weight:bold;">Position</td>
+					<td style="text-align:center;" th:text="${employee.position}"></td>
 				</tr>
 				
+
 			</tbody>
 		</table>
+		<a sec:authorize="hasRole('ADMIN')" th:href="@{/contracts/{id}(id=${employee.id})}"
+			class="btn btn-primary">Contract</a>
 	</div>
 </body>
 

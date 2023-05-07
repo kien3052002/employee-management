@@ -33,10 +33,9 @@ public class DepartmentController {
 		List<Integer> employeeNumber = new ArrayList<Integer>();
 		List<Employee> chiefs = new ArrayList<Employee>();
 		for (Department d : listDepartments) {
-			int n = departmentService.getEmployees(d.getId()).size();
-			employeeNumber.add(n);
-			Employee chief = departmentService.getChief(d.getId());
-			chiefs.add(chief);
+
+			employeeNumber.add(departmentService.getEmployees(d.getId()).size());
+			chiefs.add(departmentService.getChief(d.getId()));
 		}
 		model.addAttribute("employeeNumber", employeeNumber);
 		model.addAttribute("chiefs", chiefs);
@@ -54,19 +53,33 @@ public class DepartmentController {
 	@PostMapping("/saveDepartment")
 	public String saveDepartment(@ModelAttribute("department") Department department,
 			@RequestParam(name = "toRemove", required = false) String toRemove,
-			@RequestParam(name = "toAdd", required = false) String toAdd) {
+			@RequestParam(name = "toAdd", required = false) String toAdd,
+			@RequestParam(name = "setChief", required = false) String chiefId) {
 		List<Employee> removeList = toEmpList(toRemove);
 		List<Employee> addList = toEmpList(toAdd);
 		for (Employee e : removeList) {
 			e.setDepartment(null);
 			e.setPosition("Employee");
+			employeeService.saveEmployee(e);
 		}
 		for (Employee e : addList) {
 			e.setDepartment(department);
 			employeeService.saveEmployee(e);
 		}
+		Employee currChief = departmentService.getChief(department.getId());
+		Employee chief = employeeService.getEmployeeById(Long.valueOf(chiefId));
+		if (currChief != null) {
+			currChief.setPosition("Employee");
+			employeeService.saveEmployee(currChief);
+		}
+		if (chief != null) {
+			if (chief.getDepartment()!=null && chief.getDepartment().equals(department)) {
+				chief.setPosition("Chief");
+				employeeService.saveEmployee(chief);
+			}
+		}
 		departmentService.saveDepartment(department);
-		return "redirect:/";
+		return "redirect:/departments";
 	}
 
 	@GetMapping("/updateDepartment/{id}")
@@ -76,10 +89,12 @@ public class DepartmentController {
 		List<Employee> inDepartment = departmentService.getEmployees(id);
 		List<Employee> available = new ArrayList<Employee>();
 		List<Employee> listEmployee = employeeService.getAllEmployees();
+		Employee chief = departmentService.getChief(id);
 		for (Employee e : listEmployee) {
 			if (e.getDepartment() == null)
 				available.add(e);
 		}
+		model.addAttribute("chief", chief);
 		model.addAttribute("inDepartment", inDepartment);
 		model.addAttribute("available", available);
 		model.addAttribute("department", department);
@@ -102,12 +117,16 @@ public class DepartmentController {
 		List<Employee> employees = employeeService.getEmployeesByDepartment(id);
 		Department department = departmentService.getDepartmentById(id);
 		Employee chief = departmentService.getChief(id);
-		int employeeNumber = employees.size();
+		int employeeNumber;
 		Boolean hasChief;
 		if (chief == null)
 			hasChief = false;
 		else
 			hasChief = true;
+		if (employees == null)
+			employeeNumber = 0;
+		else
+			employeeNumber = employees.size();
 		model.addAttribute("hasChief", hasChief);
 		model.addAttribute("department", department);
 		model.addAttribute("listEmployees", employees);
@@ -117,10 +136,11 @@ public class DepartmentController {
 	}
 
 	private List<Employee> toEmpList(String s) {
-		if(s == null) return new ArrayList<Employee>();
-		List<Employee> employees =  new ArrayList<Employee>();
+		if (s == null)
+			return new ArrayList<Employee>();
+		List<Employee> employees = new ArrayList<Employee>();
 		String[] list = s.split(",");
-		for(int i=0;i<list.length;i++) {
+		for (int i = 0; i < list.length; i++) {
 			Employee e = employeeService.getEmployeeById(Long.valueOf(list[i]));
 			employees.add(e);
 		}

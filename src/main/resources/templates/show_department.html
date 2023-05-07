@@ -59,9 +59,9 @@
 			<tbody>
 				<tr th:each="department, iter : ${listDepartments}">
 					<td th:text="${department.name}"></td>
-					<td th:if="${chiefs[iter.index]!=null}" th:text="${chiefs[iter.index].fullName}"></td>
-					<td th:unless="${chiefs[iter.index]!=null}">Not Assigned</td>
-					<td th:text="${employeeNumber[iter.index]}"></td>
+					<td th:if="${chiefs.get(iter.index)!=null}" th:text="${chiefs.get(iter.index).fullName}"></td>
+					<td th:unless="${chiefs.get(iter.index)!=null}">Not Assigned</td>
+					<td th:text="${employeeNumber.get(iter.index)}"></td>
 
 					<td>
 						<a 
