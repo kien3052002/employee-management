@@ -35,7 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 	@Override
 	public Employee getChief(long id) {
 		for (Employee e : this.getEmployees(id)) {
-			if(e.getPosition() == "CHIEF") return e;
+			if(e.getPosition() == "Chief") return e;
 		}
 		return null;
 	}
@@ -52,7 +52,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 		if (optional.isPresent()) {
 			department = optional.get();
 		} else {
-			throw new RuntimeException(" Department not found for id :: " + id);
+			return null;
 		}
 		return department;
 	}
