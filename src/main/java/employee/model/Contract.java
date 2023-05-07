@@ -1,5 +1,7 @@
 package employee.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,4 +20,20 @@ public class Contract {
 	
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "signed_date")
+	private Date signedDate;
+	
+	@Column(name = "start_date")
+	private Date startDate;
+	
+	@Column(name = "end_date")
+	private Date endDate;
+	
+	@Column(name = "department_name")
+	private String departmentName;
+	
+	private String position;
+	
+	
 }
