@@ -54,6 +54,7 @@ public class EmployeeController {
 	@PostMapping("/saveEmployee")
 	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("department") long id,
 			@RequestParam("day") String day, @RequestParam("month") String month, @RequestParam("year") String year) throws ParseException{
+		
 		employee.setDobFromString(day, month, year);
 		employee.setFullName(employee.getFirstName() + " " + employee.getLastName());
 		employee.setDepartment(departmentService.getDepartmentById(id));
