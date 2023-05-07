@@ -46,7 +46,11 @@ public class UserServiceImpl implements UserService{
 		
 		return userRepository.save(user);
 	}
-
+	@Override
+	public void saveUser(User user) {
+		this.userRepository.save(user);
+		
+	}
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
