@@ -94,6 +94,11 @@ public class EmployeeController {
 		model.addAttribute("employee", employee);
 		return "details_employee";
 	}
+	
+	@GetMapping("/attend/{id}")
+	public void attend(@PathVariable(value="id") long id, Model model) {
+		
+	}
 
 	public Date defaultDate(String date) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
