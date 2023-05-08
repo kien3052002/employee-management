@@ -13,7 +13,7 @@ public interface UserService extends UserDetailsService{
 	User save(UserRegistrationDto registrationDto);
 	List<User> getAllUsers();
 	User getUserById(long id);
+	User getUserByEmail(String email);
 	void deleteUserById(long id);
 	void saveUser(User user);
-	User getUserByEmail(String email);	
 }

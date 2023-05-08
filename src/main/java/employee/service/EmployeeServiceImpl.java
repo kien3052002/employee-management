@@ -47,5 +47,4 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<Employee> getEmployeesByDepartment(long id) {
 		return employeeRepository.findByDepartmentId(id);
 	}
-
 }
