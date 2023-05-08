@@ -72,6 +72,23 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
+	public User getUserByEmail(String email) {
+		Optional<User> optional = Optional.ofNullable(userRepository.findByEmail(email));
+		User user = null;
+		if (optional.isPresent()) {
+			user = optional.get();
+		} else {
+			throw new RuntimeException(" Employee not found for email :: " + email);
+		}
+		return user;
+	}
+	
+	@Override
+	public void deleteUserById(long id) {
+		this.userRepository.deleteById(id);
+	}
+
+	@Override
 	public User getUserById(long id) {
 		Optional<User> optional = userRepository.findById(id);
 		User user = null;
@@ -81,10 +98,5 @@ public class UserServiceImpl implements UserService{
 			throw new RuntimeException(" Employee not found for id :: " + id);
 		}
 		return user;
-	}
-	
-	@Override
-	public void deleteUserById(long id) {
-		this.userRepository.deleteById(id);
 	}
 }

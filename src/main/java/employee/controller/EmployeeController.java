@@ -1,9 +1,21 @@
 package employee.controller;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,7 +82,7 @@ public class EmployeeController {
 		List<Department> departments = departmentService.getAllDepartments();
 		Department none = new Department();
 		none.setId(0);
-		none.setName("(Not Assigned)");
+		none.setName("<Not Assigned>");
 		departments.add(0, none);
 		model.addAttribute("dob", dob);
 		model.addAttribute("listDepartments", departments);
@@ -94,10 +106,19 @@ public class EmployeeController {
 		model.addAttribute("employee", employee);
 		return "details_employee";
 	}
-	
+
 	@GetMapping("/attend/{id}")
-	public void attend(@PathVariable(value="id") long id, Model model) {
-		
+	public String attend(@PathVariable(value = "id") long id, Model model) throws FileNotFoundException {
+		Calendar cal = Calendar.getInstance();
+		Employee employee = employeeService.getEmployeeById(id);
+		String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+		String day = String.valueOf(cal.get(Calendar.DATE));
+		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
+		HashMap<String, String> mapDay = mapMonth.getOrDefault(mapMonth, new HashMap<String, String>());
+		mapDay.put(day, "1");
+		mapMonth.put(month, mapDay);
+		employee.setAttendanceMap(mapMonth);
+		return "redirect:/employees";
 	}
 
 	public Date defaultDate(String date) throws ParseException {

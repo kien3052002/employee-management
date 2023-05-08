@@ -36,6 +36,7 @@
 
 		<form action="#" th:action="@{/employees/saveEmployee}" th:object="${employee}" method="POST">
 			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{attendanceMap}" />
 			<label for="First Name">First Name</label>
 			<input type="text" th:field="*{firstName}" id="First Name" class="form-control mb-4 col-4">
 			<label for="Last Name">Last Name</label>
