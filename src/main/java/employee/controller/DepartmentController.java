@@ -66,6 +66,8 @@ public class DepartmentController {
 			e.setDepartment(department);
 			employeeService.saveEmployee(e);
 		}
+		if (chiefId == null)
+			chiefId = "0";
 		Employee currChief = departmentService.getChief(department.getId());
 		Employee chief = employeeService.getEmployeeById(Long.valueOf(chiefId));
 		if (currChief != null) {
@@ -73,7 +75,7 @@ public class DepartmentController {
 			employeeService.saveEmployee(currChief);
 		}
 		if (chief != null) {
-			if (chief.getDepartment()!=null && chief.getDepartment().equals(department)) {
+			if (chief.getDepartment() != null && chief.getDepartment().equals(department)) {
 				chief.setPosition("Chief");
 				employeeService.saveEmployee(chief);
 			}

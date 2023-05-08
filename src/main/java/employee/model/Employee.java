@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,42 +45,24 @@ public class Employee {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "department_id")
 	private Department department;
-	
+
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+	@PrimaryKeyJoinColumn
 	private Contract contract;
 
 	private String gender;
 	private String position;
+
 	private Date dob;
 
 	private String phone;
 
 	@Column(name = "home_town")
 	private String homeTown;
-
-	public String[] getListFromDob() {
-		Date date = this.getDob();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String strDate = dateFormat.format(date).split(" ")[0];
-		String[] DoB = strDate.split("-");
-		return DoB;
-	}
-
-	public void setDobFromString(String day, String month, String year) throws ParseException {
-		if (day.length() < 2)
-			day = "0" + day;
-		if (month.length() < 2)
-			day = "0" + month;
-		String dob = year + "/" + month + "/" + day;
-		Date date = new SimpleDateFormat("yyyy/MM/dd").parse(dob);
-		this.setDob(date);
-	}
-
-	public String getStringFromDob() {
-		Date date = this.getDob();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String strDate = dateFormat.format(date).split(" ")[0];
-		return strDate;
+	
+	
+	public String getDobString () {
+		String s = new SimpleDateFormat("yyyy-MM-dd ss-mm-hh").format(this.getDob()).split(" ")[0];
+		return s;
 	}
 }
