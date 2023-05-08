@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import java.text.SimpleDateFormat;  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,9 +52,9 @@ public class EmployeeController {
 
 	@PostMapping("/saveEmployee")
 	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("department") long id,
-			@RequestParam("day") String day, @RequestParam("month") String month, @RequestParam("year") String year) throws ParseException{
-		
-		employee.setDobFromString(day, month, year);
+			@RequestParam("date") String dob) throws ParseException {
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+		employee.setDob(date);
 		employee.setFullName(employee.getFirstName() + " " + employee.getLastName());
 		employee.setDepartment(departmentService.getDepartmentById(id));
 		employee.setPosition("Employee");
@@ -64,10 +63,10 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/updateEmployee/{id}")
-	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
-		
+	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
+
 		Employee employee = employeeService.getEmployeeById(id);
-		String[] dob = employee.getListFromDob();
+		Date dob = defaultDate(employee.getDobString());
 		List<Department> departments = departmentService.getAllDepartments();
 		Department none = new Department();
 		none.setId(0);
@@ -94,6 +93,15 @@ public class EmployeeController {
 
 		model.addAttribute("employee", employee);
 		return "details_employee";
+	}
+
+	public Date defaultDate(String date) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dob = sdf.parse(date);
+		sdf.applyPattern("MM-dd-yyyy");
+		date = sdf.format(dob);
+		dob = sdf.parse(date);
+		return dob;
 	}
 
 }

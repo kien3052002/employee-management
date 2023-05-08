@@ -52,7 +52,7 @@
 					<thead>
 						<tr>
 							<th></th>
-							<td>ID</td>
+							<th>ID</th>
 							<th>
 								Full Name
 							</th>
@@ -75,7 +75,7 @@
 							<td th:text="${employee.id}"></td>
 							<td th:text="${employee.fullName}"></td>
 							<td th:text="${employee.gender}"></td>
-							<td th:text="${employee.getStringFromDob()}"></td>
+							<td th:text="${employee.getDobString()}"></td>
 							<td th:text="${employee.email}"></td>
 							<td th:text="${employee.position}"></td>
 							<td>
@@ -85,7 +85,7 @@
 								<input type="radio" name="setChief" th:checked="${employee==chief}" th:value="${employee.id}">
 							</td>
 						</tr>
-						<label for="setChief">Unassign Chief</label>
+						<label for="setChief">Unassign Chief &nbsp;</label>
 						<input type="radio" name="setChief" th:checked="${chief}==null" th:value="0">
 					</tbody>
 				</table>
@@ -125,7 +125,7 @@
 							<td th:text="${employee.id}"></td>
 							<td th:text="${employee.fullName}"></td>
 							<td th:text="${employee.gender}"></td>
-							<td th:text="${employee.getStringFromDob()}"></td>
+							<td th:text="${employee.getDobString()}"></td>
 							<td th:text="${employee.email}"></td>
 							<td th:text="${employee.position}"></td>
 							<td>

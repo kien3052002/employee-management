@@ -3,13 +3,14 @@ package employee.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import employee.model.User;
 import employee.service.UserService;
@@ -20,6 +21,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@GetMapping()
 	String viewUserPage(Model model) {
@@ -28,15 +32,19 @@ public class UserController {
 		return "show_user";
 	}
 
+	@PostMapping("/saveUser")
+	public String saveUser(@ModelAttribute("user") User user) {	
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+	    userService.saveUser(user);
+	    return "redirect:/users";
+	}
 	@GetMapping("/updateUser/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
-
 		User user = userService.getUserById(id);
+	    model.addAttribute("user", user);
 
-		model.addAttribute("employee", user);
 		return "update_user";
 	}
-
 	@GetMapping("/deleteUser/{id}")
 	public String deleteEmployee(@PathVariable(value = "id") long id) {
 

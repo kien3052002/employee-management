@@ -6,6 +6,10 @@
 	<title>Employee Management System</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.css}" />
+	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css}" />
+	<link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} " />
+	<link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} " />
 </head>
 
 <body>
@@ -44,12 +48,9 @@
 			<input type="text" th:field="*{phone}" id="Phone Number" class="form-control mb-4 col-4">
 			<label for="Home Town">Home Town</label>
 			<input type="text" th:field="*{homeTown}" id="Home Town" class="form-control mb-4 col-4">
-			<label for"day">Date Of Birth (DD/MM/YYY)</label>
-			<input type="text" name="day" id="day" class="form-control mb-4 col-4">
-			<label for"month">/</label>
-			<input type="text" name="month" id="month" class="form-control mb-4 col-4">
-			<label for"year">/</label>
-			<input type="text" name="year" id="year" class="form-control mb-4 col-4">
+			<label for="date">Date of birth</label>
+			<input type="date" class="form-control  mb-4 col-4" name="date" autocomplete="off"/>
+			
 
 			<label for="Male">Male</label>
 			<input type="radio" th:field="*{gender}" value="Male" id="Male">
@@ -70,8 +71,20 @@
 
 		<hr>
 
+
 		<a th:href="@{/employees}"> Back to Employee List</a>
 	</div>
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{assets/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+
+	<script>
+		$('.input-group.date').datepicker({
+			autoclose: true,
+			todayHighlight: true
+		});
+	</script>
 </body>
 
 </html>
