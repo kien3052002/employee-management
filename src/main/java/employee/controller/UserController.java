@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import employee.model.User;
 import employee.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/users")
@@ -33,10 +34,15 @@ public class UserController {
 	}
 
 	@PostMapping("/saveUser")
-	public String saveUser(@ModelAttribute("user") User user) {	
+	public String saveUser(@ModelAttribute("user") User user, HttpServletRequest request) {	
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 	    userService.saveUser(user);
-	    return "redirect:/users";
+	    if (request.getUserPrincipal().getName().equals(user.getEmail()) && user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_USER"))) {
+	        SecurityContextHolder.clearContext();
+	        request.getSession().invalidate();
+	        return "redirect:/login";
+	    }
+        return "redirect:/users";
 	}
 	@GetMapping("/updateUser/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
@@ -46,10 +52,16 @@ public class UserController {
 		return "update_user";
 	}
 	@GetMapping("/deleteUser/{id}")
-	public String deleteEmployee(@PathVariable(value = "id") long id) {
-
+	public String deleteEmployee(@PathVariable(value = "id") long id, HttpServletRequest request) {
+		User currentUser = userService.getUserByEmail(request.getUserPrincipal().getName());
 		this.userService.deleteUserById(id);
+	    if (currentUser != null && currentUser.getId() == id) {
+	        SecurityContextHolder.clearContext();
+	        request.getSession().invalidate();
+	        return "redirect:/login";
+	    } else {
 		return "redirect:/users";
+	    }
 	}
 
 }
