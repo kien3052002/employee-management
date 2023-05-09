@@ -96,13 +96,11 @@ public class Employee {
 				JsonObject obj = jsonObject.getJsonObject(month);
 				
 				if (obj != null) {
-					
 					HashMap<String, String> dayMap = new HashMap<>();
 					for (int k = 1; k < 32; k++) {
 						String day = String.valueOf(k);
 						
-						if (obj.getString(day) != null) {
-//							System.out.println("KLJNHBCGFDXRCTBYUNIJHBGFDSEXRDCTRFBGYUHYN");
+						if (obj.get(day) != null) {
 							dayMap.put(day, obj.getString(day));
 						}
 						
@@ -112,7 +110,6 @@ public class Employee {
 			}
 			return monthMap;
 		} catch (Exception e) {
-//			System.out.println(e);
 			return new HashMap<String, HashMap<String,String>>();
 		}
 	}
@@ -127,7 +124,7 @@ public class Employee {
 				for (int k = 1; k < 32; k++) {
 					String day = String.valueOf(k);
 					if (map.get(month).get(day) != null) {
-						dayBuilder.add(day, "1");
+						dayBuilder.add(day, map.get(month).get(day));
 					}
 				}
 				monthBuilder.add(month, dayBuilder);

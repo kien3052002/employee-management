@@ -114,7 +114,7 @@ public class EmployeeController {
 		String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
 		String day = String.valueOf(cal.get(Calendar.DATE));
 		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
-		HashMap<String, String> mapDay = mapMonth.getOrDefault(mapMonth, new HashMap<String, String>());
+		HashMap<String, String> mapDay = mapMonth.getOrDefault(month, new HashMap<String, String>());
 		mapDay.put(day, "1");
 		mapMonth.put(month, mapDay);
 		employee.setAttendanceMap(mapMonth);
