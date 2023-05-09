@@ -45,7 +45,7 @@ public class Contract {
 	private String position;
 	
 	//Quan hệ 1-1 với employee
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "employee_id")
     private Employee employee;
