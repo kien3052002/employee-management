@@ -28,12 +28,23 @@
 			<label for="Password">Password</label>
 			<input type="password" th:field="*{password}" class="form-control mb-4 col-4">
 			<label for="Roles">Roles</label>
-			<select name="roles">
 
-				<option th:value="ROLE_ADMIN" th:text="ROLE_ADMIN" th:field="*{roles}"></option>
-				<option th:value="ROLE_USER" th:text="ROLE_USER" th:field="*{roles}"></option>
-			</select>
-
+			<!-- Add if statement to check if current user has role of "USER" -->
+			<th:block sec:authorize="hasRole('USER')">
+				<label for="Roles">Roles</label>
+				<select name="roles">
+					<option th:value="${user.roles[0].name}" th:text="${user.roles[0].name}"></option>
+				</select>
+			</th:block>
+			
+			<!-- Add else statement for all other users -->
+			<th:block sec:authorize="hasRole('ADMIN')">
+				<label for="Roles" sec:authorize="hasRole('ADMIN')">Roles</label>
+				<select name="roles" sec:authorize="hasRole('ADMIN')">
+					<option th:value="ROLE_ADMIN" th:text="ROLE_ADMIN"></option>
+					<option th:value="ROLE_USER" th:text="ROLE_USER"></option>
+				</select>
+			</th:block>
 
 			<button type="submit" class="btn btn-info col-2"> Update User</button>
 		</form>
