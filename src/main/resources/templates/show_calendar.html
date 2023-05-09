@@ -36,6 +36,21 @@
 
 	<div class="container my-2">
 		<h1 th:text="${employee.fullName}"></h1>
+		<h2 th:switch="${thisMonth}">
+			<span th:case="'01'">January:</span>
+			<span th:case="'02'">February:</span>
+			<span th:case="'03'">March:</span>
+			<span th:case="'04'">April:</span>
+			<span th:case="'05'">May:</span>
+			<span th:case="'06'">June:</span>
+			<span th:case="'07'">July:</span>
+			<span th:case="'08'">August:</span>
+			<span th:case="'09'">September:</span>
+			<span th:case="'10'">October:</span>
+			<span th:case="'11'">November:</span>
+			<span th:case="'12'">December:</span>
+		</h2>
+		
 		<table border="1" class="table table-striped table-responsive-md">
 
 			<tbody>
@@ -47,12 +62,13 @@
 				<th>FRI</th>
 				<th>SAT</th>
 				<tr th:each="i: ${#numbers.sequence(0, weekNum-1)}">
-					<td th:each="k : ${#numbers.sequence(0, 6)}"
+					<td th:each="k : ${#numbers.sequence(0, 6)}" class="cell"
 						th:classappend="${months[k+i*7]} == ${thisMonth} ? cell-abled : cell-disabled">
 						<div class="cell">
 							<span th:text="${days[k+i*7]}"></span>/<span th:text="${months[k+i*7]}"></span>
+							<img th:src="@{/images/marked.png}" class="attend-icon" th:if="${attendance[k+i*7]==1}"/>
+							<img th:src="@{/images/missed.png}" class="attend-icon" th:if="${attendance[k+i*7]==0}"/>
 						</div>
-
 					</td>
 				</tr>
 

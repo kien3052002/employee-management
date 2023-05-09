@@ -101,8 +101,8 @@ public class EmployeeController {
 	public String attend(@PathVariable(value = "id") long id, Model model) throws FileNotFoundException {
 		Calendar cal = Calendar.getInstance();
 		Employee employee = employeeService.getEmployeeById(id);
-		String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
-		String day = String.valueOf(cal.get(Calendar.DATE));
+		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+		String day = String.format("%02d", cal.get(Calendar.DATE));
 		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
 		HashMap<String, String> mapDay = mapMonth.getOrDefault(month, new HashMap<String, String>());
 		mapDay.put(day, "1");
@@ -110,15 +110,6 @@ public class EmployeeController {
 		employee.setAttendanceMap(mapMonth);
 		return "redirect:/employees";
 	}
-
-//	public Date defaultDate(String date) throws ParseException {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//		Date dob = sdf.parse(date);
-//		sdf.applyPattern("MM-dd-yyyy");
-//		date = sdf.format(dob);
-//		dob = sdf.parse(date);
-//		return dob;
-//	}
 
 	@GetMapping("/calendar/{id}/{month}")
 	public String showCalendar(@PathVariable(value = "id") long id,
@@ -130,22 +121,30 @@ public class EmployeeController {
 			month = Integer.valueOf(m) - 1;
 		if (month < 0 || month > 12)
 			return null;
+		
 		Employee employee = employeeService.getEmployeeById(id);
 		List<String> calDays = MonthCalendar.daysOfMonth(month);
+		HashMap<String, HashMap<String, String>> attendanceMap = employee.getAttendanceMap();
 		int n = calDays.size();
 		String[] days = new String[n];
 		String[] months = new String[n];
+		int[] attendance = new int[n];
+		
 		for (int i = 0; i < n; i++) {
-
 			days[i] = calDays.get(i).split("-")[2];
 			months[i] = calDays.get(i).split("-")[1];
+			if (attendanceMap.get(months[i]) == null || attendanceMap.get(months[i]).get(days[i]) == null)
+				attendance[i] = -1;
+			else
+				attendance[i] = Integer.valueOf(attendanceMap.get(months[i]).get(days[i]));
 		}
-		HashMap<String, HashMap<String, String>> attendance = employee.getAttendanceMap();
+
 		model.addAttribute("weekNum", n / 7);
+		model.addAttribute("attendance", attendance);
 		model.addAttribute("days", days);
 		model.addAttribute("months", months);
 		model.addAttribute("employee", employee);
-		model.addAttribute("thisMonth", month +1);
+		model.addAttribute("thisMonth", month + 1);
 		return "show_calendar";
 	}
 

@@ -86,31 +86,31 @@ public class Employee {
 					+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
 			JsonReader jsonReader = Json.createReader(fis);
 			JsonObject jsonObject = jsonReader.readObject();
-			
+
 			jsonReader.close();
 			fis.close();
 
 			HashMap<String, HashMap<String, String>> monthMap = new HashMap<String, HashMap<String, String>>();
 			for (int i = 1; i < 13; i++) {
-				String month = String.valueOf(i);
+				String month = String.format("%02d", i);
 				JsonObject obj = jsonObject.getJsonObject(month);
-				
+
 				if (obj != null) {
 					HashMap<String, String> dayMap = new HashMap<>();
 					for (int k = 1; k < 32; k++) {
-						String day = String.valueOf(k);
-						
+						String day = String.format("%02d", k);
+
 						if (obj.get(day) != null) {
 							dayMap.put(day, obj.getString(day));
 						}
-						
+
 					}
 					monthMap.put(month, dayMap);
 				}
 			}
 			return monthMap;
 		} catch (Exception e) {
-			return new HashMap<String, HashMap<String,String>>();
+			return new HashMap<String, HashMap<String, String>>();
 		}
 	}
 
@@ -118,11 +118,11 @@ public class Employee {
 		JsonObjectBuilder monthBuilder = Json.createObjectBuilder();
 
 		for (int i = 1; i < 13; i++) {
-			String month = String.valueOf(i);
+			String month = String.format("%02d", i);
 			if (map.get(month) != null) {
 				JsonObjectBuilder dayBuilder = Json.createObjectBuilder();
 				for (int k = 1; k < 32; k++) {
-					String day = String.valueOf(k);
+					String day = String.format("%02d", k);
 					if (map.get(month).get(day) != null) {
 						dayBuilder.add(day, map.get(month).get(day));
 					}
@@ -133,7 +133,7 @@ public class Employee {
 
 		JsonObject jsonObject = monthBuilder.build();
 		OutputStream os = new FileOutputStream("src/main/resources/attendance/" + String.format("%02d", this.getId())
-		+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
+				+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
 		JsonWriter jsonWriter = Json.createWriter(os);
 		HashMap<String, Boolean> config = new HashMap<String, Boolean>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
