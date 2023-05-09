@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Employee Management System</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Employee Management System</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<br>
+	<br>
+
+	<div class="container my-2">
+		<h1 th:text="${contract.name}"></h1>
+		<table border="1" class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<td colspan="2" style="text-align:center;font-weight:bold;">Contract's Infomations</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">ID</td>
+					<td style="text-align:center;" th:text="${contract.id}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Contract name</td>
+					<td style="text-align:center;" th:text="${contract.name}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Employee name</td>
+					<td style="text-align:center;" th:text="${contract.employee.getLastName()}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Department</td>
+					<td style="text-align:center;" th:text="${contract.departmentName}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Position</td>
+					<td style="text-align:center;" th:text="${contract.position}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Signed date</td>
+					<td style="text-align:center;" th:text="${contract.signedDate}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Start date</td>
+					<td style="text-align:center;" th:text="${contract.startDate}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">End date</td>
+					<td style="text-align:center;" th:text="${contract.endDate}"></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;font-weight:bold;">Daily wage</td>
+					<td style="text-align:center;" th:text="${contract.dailyWage}"></td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>

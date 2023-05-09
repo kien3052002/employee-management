@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Employee Management System</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.css}" />
+	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css}" />
+	<link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} " />
+	<link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} " />
+</head>
+
+<body>
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Employee Management System</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<br>
+		<br>
+		<h1>Employee Management System</h1>
+		<hr>
+		<h2>Save Contract</h2>
+
+		<form action="#" th:action="@{/contracts/saveContract}" th:object="${contract}" method="POST">
+			<input type="hidden" th:field="*{id}" />
+			<label for="id">Contract id</label>
+			<select name="id_contract">
+				<option th:each="e : ${noContractEmployees}" th:value="${e.id}" th:text="${e.id}"></option>
+			</select>
+			<br>
+			<br>
+			<label for="Name">Name</label>
+			<input type="text" th:field="*{name}" id="Name" class="form-control mb-4 col-4">
+			<label for="signed">Signed date</label>
+			<input type="date" class="form-control  mb-4 col-4" name="signed" autocomplete="off"/>
+			<label for="start">Start date</label>
+			<input type="date" class="form-control  mb-4 col-4" name="start" autocomplete="off"/>
+			<label for="end">End date</label>
+			<input type="date" class="form-control  mb-4 col-4" name="end" autocomplete="off"/>
+			<label for="department">Department &nbsp;</label>
+			<select name="department">
+
+				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}"></option>
+
+			</select>
+			<br>
+			<br>
+			<label for="DailyWage">Daily wage</label>
+			<select name="dailyWage">
+				<option th:value=100000 th:text="100000"></option>
+				<option th:value=150000 th:text="150000"></option>
+			</select>
+			<br>
+			<br>
+			<button type="submit" class="btn btn-info col-2"> Save Contract</button>
+		</form>
+
+		<hr>
+
+		<a th:href="@{/contracts}"> Back to Contracts List</a>
+	</div>
+</body>
+</html>

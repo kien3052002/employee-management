@@ -1,5 +1,7 @@
 package employee.service;
 
+import java.util.List;
+
 import employee.model.Contract;
 
 public interface ContractService {

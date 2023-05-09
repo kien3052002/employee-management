@@ -39,20 +39,21 @@
 		<h2>Save Contract</h2>
 
 		<form action="#" th:action="@{/contracts/saveContract}" th:object="${contract}" method="POST">
+			<input type="hidden" th:field="*{id}" />
 			<label for="id">Contract id</label>
 			<select name="id_contract">
-				<option th:each="e : ${noContractEmployees}" th:value="${e.getId()}" th:text="${e.getId()}"></option>
+				<option th:each="e : ${noContractEmployees}" th:value="${e.id}" th:text="${e.id}"></option>
 			</select>
 			<br>
 			<br>
 			<label for="Name">Name</label>
 			<input type="text" th:field="*{name}" id="Name" class="form-control mb-4 col-4">
-			<label for="signedDate">Signed date</label>
-			<input type="date" class="form-control  mb-4 col-4" name="signedDate" autocomplete="off"/>
-			<label for="startDate">Start date</label>
-			<input type="date" class="form-control  mb-4 col-4" name="startDate" autocomplete="off"/>
-			<label for="endDate">End date</label>
-			<input type="date" class="form-control  mb-4 col-4" name="endDate" autocomplete="off"/>
+			<label for="signed">Signed date</label>
+			<input type="date" class="form-control  mb-4 col-4" name="signed" autocomplete="off"/>
+			<label for="start">Start date</label>
+			<input type="date" class="form-control  mb-4 col-4" name="start" autocomplete="off"/>
+			<label for="end">End date</label>
+			<input type="date" class="form-control  mb-4 col-4" name="end" autocomplete="off"/>
 			<label for="department">Department &nbsp;</label>
 			<select name="department">
 
@@ -76,15 +77,4 @@
 		<a th:href="@{/contracts}"> Back to Contracts List</a>
 	</div>
 </body>
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-	<script th:src="@{assets/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
-
-	<script>
-		$('.input-group.date').datepicker({
-			autoclose: true,
-			todayHighlight: true
-		});
-	</script>
 </html>
