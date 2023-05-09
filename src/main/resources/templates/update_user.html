@@ -27,7 +27,6 @@
 			<input type="text" th:field="*{email}" class="form-control mb-4 col-4">
 			<label for="Password">Password</label>
 			<input type="password" th:field="*{password}" class="form-control mb-4 col-4">
-			<label for="Roles">Roles</label>
 
 			<!-- Add if statement to check if current user has role of "USER" -->
 			<th:block sec:authorize="hasRole('USER')">
@@ -45,7 +44,8 @@
 					<option th:value="ROLE_USER" th:text="ROLE_USER"></option>
 				</select>
 			</th:block>
-
+			
+			
 			<button type="submit" class="btn btn-info col-2"> Update User</button>
 		</form>
 
