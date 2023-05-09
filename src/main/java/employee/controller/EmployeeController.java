@@ -1,21 +1,12 @@
 package employee.controller;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonWriter;
-import javax.json.JsonWriterFactory;
-import javax.json.stream.JsonGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import employee.model.Department;
 import employee.model.Employee;
+import employee.model.MonthCalendar;
 import employee.service.DepartmentService;
 import employee.service.EmployeeService;
 
@@ -78,13 +70,11 @@ public class EmployeeController {
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
 
 		Employee employee = employeeService.getEmployeeById(id);
-		Date dob = defaultDate(employee.getDobString());
 		List<Department> departments = departmentService.getAllDepartments();
 		Department none = new Department();
 		none.setId(0);
 		none.setName("<Not Assigned>");
 		departments.add(0, none);
-		model.addAttribute("dob", dob);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "update_employee";
@@ -121,13 +111,42 @@ public class EmployeeController {
 		return "redirect:/employees";
 	}
 
-	public Date defaultDate(String date) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date dob = sdf.parse(date);
-		sdf.applyPattern("MM-dd-yyyy");
-		date = sdf.format(dob);
-		dob = sdf.parse(date);
-		return dob;
+//	public Date defaultDate(String date) throws ParseException {
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		Date dob = sdf.parse(date);
+//		sdf.applyPattern("MM-dd-yyyy");
+//		date = sdf.format(dob);
+//		dob = sdf.parse(date);
+//		return dob;
+//	}
+
+	@GetMapping("/calendar/{id}/{month}")
+	public String showCalendar(@PathVariable(value = "id") long id,
+			@PathVariable(value = "month", required = false) String m, Model model) {
+		int month;
+		if (m.equals("now"))
+			month = MonthCalendar.currMonth() - 1;
+		else
+			month = Integer.valueOf(m) - 1;
+		if (month < 0 || month > 12)
+			return null;
+		Employee employee = employeeService.getEmployeeById(id);
+		List<String> calDays = MonthCalendar.daysOfMonth(month);
+		int n = calDays.size();
+		String[] days = new String[n];
+		String[] months = new String[n];
+		for (int i = 0; i < n; i++) {
+
+			days[i] = calDays.get(i).split("-")[2];
+			months[i] = calDays.get(i).split("-")[1];
+		}
+		HashMap<String, HashMap<String, String>> attendance = employee.getAttendanceMap();
+		model.addAttribute("weekNum", n / 7);
+		model.addAttribute("days", days);
+		model.addAttribute("months", months);
+		model.addAttribute("employee", employee);
+		model.addAttribute("thisMonth", month +1);
+		return "show_calendar";
 	}
 
 }

@@ -132,7 +132,6 @@ public class Employee {
 		}
 
 		JsonObject jsonObject = monthBuilder.build();
-
 		OutputStream os = new FileOutputStream("src/main/resources/attendance/" + String.format("%02d", this.getId())
 		+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
 		JsonWriter jsonWriter = Json.createWriter(os);

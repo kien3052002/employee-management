@@ -7,6 +7,7 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -82,7 +83,8 @@
 								<a th:href="@{/employees/detailsEmployee/{id}(id=${employee.id})}"
 									class="btn btn-primary">Details</a>
 								<label for="setChief">Assign As Chief</label>
-								<input type="radio" name="setChief" th:checked="${employee==chief}" th:value="${employee.id}">
+								<input type="radio" name="setChief" th:checked="${employee==chief}"
+									th:value="${employee.id}">
 							</td>
 						</tr>
 						<label for="setChief">Unassign Chief &nbsp;</label>
