@@ -6,10 +6,7 @@
 	<title>Employee Management System</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.css}" />
-	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css}" />
-	<link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} " />
-	<link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} " />
+	<link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -38,6 +35,7 @@
 		<h2>Save Employee</h2>
 
 		<form action="#" th:action="@{/employees/saveEmployee}" th:object="${employee}" method="POST">
+			
 			<label for="First Name">First Name</label>
 			<input type="text" th:field="*{firstName}" id="First Name" class="form-control mb-4 col-4">
 			<label for="Last Name">Last Name</label>

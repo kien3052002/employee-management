@@ -1,8 +1,11 @@
 package employee.controller;
 
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import employee.model.Department;
 import employee.model.Employee;
+import employee.model.MonthCalendar;
 import employee.service.DepartmentService;
 import employee.service.EmployeeService;
 
@@ -66,13 +70,11 @@ public class EmployeeController {
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
 
 		Employee employee = employeeService.getEmployeeById(id);
-		Date dob = defaultDate(employee.getDobString());
 		List<Department> departments = departmentService.getAllDepartments();
 		Department none = new Department();
 		none.setId(0);
-		none.setName("(Not Assigned)");
+		none.setName("<Not Assigned>");
 		departments.add(0, none);
-		model.addAttribute("dob", dob);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "update_employee";
@@ -94,19 +96,56 @@ public class EmployeeController {
 		model.addAttribute("employee", employee);
 		return "details_employee";
 	}
-	
+
 	@GetMapping("/attend/{id}")
-	public void attend(@PathVariable(value="id") long id, Model model) {
-		
+	public String attend(@PathVariable(value = "id") long id, Model model) throws FileNotFoundException {
+		Calendar cal = Calendar.getInstance();
+		Employee employee = employeeService.getEmployeeById(id);
+		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+		String day = String.format("%02d", cal.get(Calendar.DATE));
+		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
+		HashMap<String, String> mapDay = mapMonth.getOrDefault(month, new HashMap<String, String>());
+		mapDay.put(day, "1");
+		mapMonth.put(month, mapDay);
+		employee.setAttendanceMap(mapMonth);
+		return "redirect:/employees";
 	}
 
-	public Date defaultDate(String date) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date dob = sdf.parse(date);
-		sdf.applyPattern("MM-dd-yyyy");
-		date = sdf.format(dob);
-		dob = sdf.parse(date);
-		return dob;
+	@GetMapping("/calendar/{id}/{month}")
+	public String showCalendar(@PathVariable(value = "id") long id,
+			@PathVariable(value = "month", required = false) String m, Model model) {
+		int month;
+		if (m.equals("now"))
+			month = MonthCalendar.currMonth() - 1;
+		else
+			month = Integer.valueOf(m) - 1;
+		if (month < 0 || month > 12)
+			return null;
+		
+		Employee employee = employeeService.getEmployeeById(id);
+		List<String> calDays = MonthCalendar.daysOfMonth(month);
+		HashMap<String, HashMap<String, String>> attendanceMap = employee.getAttendanceMap();
+		int n = calDays.size();
+		String[] days = new String[n];
+		String[] months = new String[n];
+		int[] attendance = new int[n];
+		
+		for (int i = 0; i < n; i++) {
+			days[i] = calDays.get(i).split("-")[2];
+			months[i] = calDays.get(i).split("-")[1];
+			if (attendanceMap.get(months[i]) == null || attendanceMap.get(months[i]).get(days[i]) == null)
+				attendance[i] = -1;
+			else
+				attendance[i] = Integer.valueOf(attendanceMap.get(months[i]).get(days[i]));
+		}
+
+		model.addAttribute("weekNum", n / 7);
+		model.addAttribute("attendance", attendance);
+		model.addAttribute("days", days);
+		model.addAttribute("months", months);
+		model.addAttribute("employee", employee);
+		model.addAttribute("thisMonth", month + 1);
+		return "show_calendar";
 	}
 
 }

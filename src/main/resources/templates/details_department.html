@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+	<link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -70,13 +70,13 @@
 					<td th:text="${chief.id}"></td>
 					<td th:text="${chief.fullName}"></td>
 					<td th:text="${chief.gender}"></td>
-					<td th:text="${chief.getStringFromDob()}"></td>
+					<td th:text="${chief.getDobString()}"></td>
 					<td th:text="${chief.email}"></td>
 					<td th:text="${chief.position}"></td>
 					<td>
-						<a th:href="@{employees/detailsEmployee/{id}(id=${chief.id})}"
+						<a th:href="@{/employees/detailsEmployee/{id}(id=${chief.id})}"
 							class="btn btn-primary">Details</a>
-						<a sec:authorize="hasRole('ADMIN')" th:href="@{employees/updateEmployee/{id}(id=${chief.id})}"
+						<a sec:authorize="hasRole('ADMIN')" th:href="@{/employees/updateEmployee/{id}(id=${chief.id})}"
 							class="btn btn-primary">Update</a>
 					</td>
 				</tr>
