@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>Employee Management System</title>
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-	
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Employee Management System</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
 
-<!-- create navigation bar ( header) -->
+	<!-- create navigation bar ( header) -->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#" th:href="@{/}">Employee Management System</a>
 			</div>
@@ -35,18 +33,19 @@
 	<div></div>
 	<br>
 	<br>
-	
+
 	<div class="container my-2">
-	
-	<br>
-	<br>
-	<a th:href = "@{/employees}" class="btn btn-primary btn-sm mb-3"> Show Employees </a>
-	<br>
-	<br>
-	<a th:href = "@{/users}" class="btn btn-primary btn-sm mb-3"> Show Users </a>
-	<br>
-	<br>
-	<a th:href = "@{/departments}" class="btn btn-primary btn-sm mb-3"> Show Departments </a>	
+
+		<br>
+		<br>
+		<a th:href="@{/employees}" class="btn btn-primary btn-sm mb-3"> Show Employees </a>
+		<br>
+		<br>
+		<a th:href="@{/users}" class="btn btn-primary btn-sm mb-3"> Show Users </a>
+		<br>
+		<br>
+		<a th:href="@{/departments}" class="btn btn-primary btn-sm mb-3"> Show Departments </a>
 	</div>
 </body>
+
 </html>

@@ -1,0 +1,14 @@
+.cell-disabled{
+	background-color: grey;
+}
+
+.cell-abled{
+	background-color: beige;
+	
+}
+
+.cell{}
+
+th{
+	text-align: center;
+}
