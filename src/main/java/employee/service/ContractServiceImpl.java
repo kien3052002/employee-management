@@ -41,4 +41,8 @@ public class ContractServiceImpl implements ContractService {
 		}
 		return contract;
 	}
+	@Override
+	public Employee getEmployee(long id) {
+		return employeeService.getEmployeeById(id);
+	}
 }
