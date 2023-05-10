@@ -65,7 +65,7 @@
 					<td> <a  th:href="@{users/updateUser/{id}(id=${user.id})}"
 							class="btn btn-primary">Update</a>
 						<a  th:href="@{users/deleteUser/{id}(id=${user.id})}"
-							class="btn btn-danger">Delete</a>
+							class="btn btn-danger" sec:authorize="hasRole('ADMIN')">Delete</a>
 					</td>
 				</tr>
 			</tbody>
