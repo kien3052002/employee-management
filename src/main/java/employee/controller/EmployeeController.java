@@ -97,12 +97,22 @@ public class EmployeeController {
 		return "details_employee";
 	}
 
-	@GetMapping("/attend/{id}")
-	public String attend(@PathVariable(value = "id") long id, Model model) throws FileNotFoundException {
-		Calendar cal = Calendar.getInstance();
+	@GetMapping(value = { "/attend/{id}/{day}_{month}", "/attend/{id}" })
+	public String attend(@PathVariable(value = "id") long id, Model model,
+			@PathVariable(value = "day") String d,
+			@PathVariable(value = "month") String m) throws FileNotFoundException {
+		String month;
+		String day;
+		System.out.println(m + d);
+		if (d == null && m == null) {
+			Calendar cal = Calendar.getInstance();
+			month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
+			day = String.format("%02d", cal.get(Calendar.DATE));
+		} else {
+			month = m;
+			day = d;
+		}
 		Employee employee = employeeService.getEmployeeById(id);
-		String month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
-		String day = String.format("%02d", cal.get(Calendar.DATE));
 		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
 		HashMap<String, String> mapDay = mapMonth.getOrDefault(month, new HashMap<String, String>());
 		mapDay.put(day, "1");
@@ -121,7 +131,7 @@ public class EmployeeController {
 			month = Integer.valueOf(m) - 1;
 		if (month < 0 || month > 12)
 			return null;
-		
+
 		Employee employee = employeeService.getEmployeeById(id);
 		List<String> calDays = MonthCalendar.daysOfMonth(month);
 		HashMap<String, HashMap<String, String>> attendanceMap = employee.getAttendanceMap();
@@ -129,7 +139,7 @@ public class EmployeeController {
 		String[] days = new String[n];
 		String[] months = new String[n];
 		int[] attendance = new int[n];
-		
+
 		for (int i = 0; i < n; i++) {
 			days[i] = calDays.get(i).split("-")[2];
 			months[i] = calDays.get(i).split("-")[1];
@@ -138,8 +148,10 @@ public class EmployeeController {
 			else
 				attendance[i] = Integer.valueOf(attendanceMap.get(months[i]).get(days[i]));
 		}
-
-		model.addAttribute("weekNum", n / 7);
+		model.addAttribute("currMonth", String.format("%02d", MonthCalendar.currMonth()));
+		model.addAttribute("thisDay", MonthCalendar.currDate());
+		model.addAttribute("maxDays", MonthCalendar.dateIndexLimit());
+		model.addAttribute("weekNum", (n+6) / 7);
 		model.addAttribute("attendance", attendance);
 		model.addAttribute("days", days);
 		model.addAttribute("months", months);

@@ -4,6 +4,11 @@
 	background-color: grey;
 }
 
+.cell-disabled div{
+	display: none;
+}
+
+
 .cell-abled{
 	background-color: beige;
 	
