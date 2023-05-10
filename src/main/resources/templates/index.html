@@ -35,19 +35,34 @@
 	<br>
 
 	<div class="container my-2">
-
 		<br>
 		<br>
-		<a th:href="@{/employees}" class="btn btn-primary btn-sm mb-3"> Show Employees </a>
-		<br>
-		<br>
-		<a th:href="@{/users}" class="btn btn-primary btn-sm mb-3"> Show Users </a>
-		<br>
-		<br>
-		<a th:href="@{/departments}" class="btn btn-primary btn-sm mb-3"> Show Departments </a>
-		<br>
-		<br>
-		<a th:href = "@{/contracts}" class="btn btn-primary btn-sm mb-3"> Show Contracts </a>
+		<table border="1" class="table table-striped table-responsive-sm" style="width: 60%;margin-left: auto;margin-right: auto;">
+			<thead>
+				<tr>
+					<th>Data</th>
+					<th>Control</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: center;">Employees Data</td>
+					<td style="width: 20%;"><a th:href="@{/employees}" class="btn btn-primary btn-sm mb-3" style="width: 100%;"> Show Employees </a></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">Users Data</td>
+					<td style="width: 20%;"><a th:href="@{/users}" class="btn btn-primary btn-sm mb-3" style="width: 100%;"> Show Users </a></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">Departments Data</td>
+					<td style="width: 20%;"><a th:href="@{/departments}" class="btn btn-primary btn-sm mb-3" style="width: 100%;"> Show Departments </a></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">Contracts Data</td>
+					<td style="width: 20%;"><a th:href = "@{/contracts}" class="btn btn-primary btn-sm mb-3" style="width: 100%;"> Show Contracts </a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 
