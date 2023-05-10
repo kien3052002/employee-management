@@ -3,6 +3,7 @@ package employee.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class ContractController {
 			@RequestParam("id_contract") long id_contract, @RequestParam("department") long id,
 			@RequestParam("signed") String signed, @RequestParam("start") String start, @RequestParam("end") String end)
 			throws ParseException {
-		if(contractService.getContractById(id_contract)!=null) {
+		if (contractService.getContractById(id_contract) != null) {
 			Contract c = contractService.getContractById(id_contract);
 			c.setEmployee(null);
 			Employee e = contractService.getEmployee(id_contract);
@@ -94,12 +95,18 @@ public class ContractController {
 	@GetMapping("/updateContract/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
 		Contract contract = contractService.getContractById(id);
-		model.addAttribute("contract", contract);
+		Date currDate = Calendar.getInstance().getTime();
+		Date startDate = contract.getStartDate();
+		Boolean canUpdate = true;
+		if (startDate.compareTo(currDate) <= 0) {
+			canUpdate = false;
+		}
 		List<Department> departments = departmentService.getAllDepartments();
 		Department none = new Department();
 		none.setId(0);
 		none.setName("(Not Assigned)");
 		departments.add(0, none);
+		model.addAttribute("canUpdate", canUpdate);
 		model.addAttribute("contract", contract);
 		model.addAttribute("listDepartments", departments);
 		return "update_contract";

@@ -1,5 +1,7 @@
 package employee.service;
 
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,13 @@ public class ContractServiceImpl implements ContractService {
 	
 	@Override
 	public void saveContract(Contract contract) {
+		Employee employee = contract.getEmployee();
+		HashMap<String, HashMap<String, String>> map = employee.getAttendanceMap();
+		try {
+			employee.setAttendanceMap(map);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		this.contractRepository.save(contract);
 	}
 

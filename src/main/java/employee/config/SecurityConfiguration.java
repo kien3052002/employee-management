@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 						.requestMatchers("/departments/**").hasAuthority("ROLE_ADMIN").requestMatchers("/users**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/users/updateUser/**").hasAnyRole("USER", "ADMIN").requestMatchers("/users/deleteUser/**").hasAuthority("ROLE_ADMIN")
 						.anyRequest().authenticated())
-				.formLogin(form -> form.loginPage("/login").permitAll())
+				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
 				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
 		return http.build();
 	}

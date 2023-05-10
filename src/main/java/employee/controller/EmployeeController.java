@@ -97,7 +97,7 @@ public class EmployeeController {
 		return "details_employee";
 	}
 
-	@GetMapping(value = { "/attend/{id}/{day}_{month}", "/attend/{id}" })
+	@GetMapping(value = { "/attend/{id}", "/attend/{id}/{day}_{month}"})
 	public String attend(@PathVariable(value = "id") long id, Model model,
 			@PathVariable(value = "day") String d,
 			@PathVariable(value = "month") String m) throws FileNotFoundException {
