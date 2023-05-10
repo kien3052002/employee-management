@@ -37,17 +37,17 @@
 		<form action="#" th:action="@{/employees/saveEmployee}" th:object="${employee}" method="POST">
 			
 			<label for="First Name">First Name</label>
-			<input type="text" th:field="*{firstName}" id="First Name" class="form-control mb-4 col-4">
+			<input type="text" th:field="*{firstName}" id="First Name" class="form-control mb-4 col-4" required>
 			<label for="Last Name">Last Name</label>
-			<input type="text" th:field="*{lastName}" id="Last Name" class="form-control mb-4 col-4">
+			<input type="text" th:field="*{lastName}" id="Last Name" class="form-control mb-4 col-4" required>
 			<label for="Email">Email</label>
-			<input type="text" th:field="*{email}" id="Email" class="form-control mb-4 col-4">
+			<input type="email" th:field="*{email}" id="Email" class="form-control mb-4 col-4" required>
 			<label for="Phone Number">Phone Number</label>
 			<input type="text" th:field="*{phone}" id="Phone Number" class="form-control mb-4 col-4">
 			<label for="Home Town">Home Town</label>
 			<input type="text" th:field="*{homeTown}" id="Home Town" class="form-control mb-4 col-4">
 			<label for="date">Date of birth</label>
-			<input type="date" class="form-control  mb-4 col-4" name="date" autocomplete="off"/>
+			<input type="date" class="form-control  mb-4 col-4" name="date" autocomplete="off" required/>
 			
 
 			<label for="Male">Male</label>

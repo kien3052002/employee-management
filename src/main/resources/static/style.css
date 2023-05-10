@@ -46,3 +46,7 @@ table{
 	right: 10px;
 	bottom: 10px
 }
+
+input[type= text], input[type=email], input[type=date] {
+	width: 400px;
+}

@@ -10,6 +10,24 @@
 </head>
 
 <body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Employee Management System</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br><br>
 	<div class="container">
 		<h1>Employee Management System</h1>
 		<hr>
@@ -17,18 +35,17 @@
 
 		<form action="#" th:action="@{/users/saveUser}" th:object="${user}" method="POST">
 
-			<!-- Add hidden form field to handle update -->
 			<input type="hidden" th:field="*{id}" />
 			<label for="First Name">First Name</label>
-			<input type="text" th:field="*{firstName}" class="form-control mb-4 col-4">
+			<input type="text" th:field="*{firstName}" class="form-control mb-4 col-4" required>
 			<label for="Last Name">Last Name</label>
-			<input type="text" th:field="*{lastName}" class="form-control mb-4 col-4">
+			<input type="email" th:field="*{lastName}" class="form-control mb-4 col-4" required>
 			<label for="Email">Email</label>
-			<input type="text" th:field="*{email}" class="form-control mb-4 col-4">
+			<input type="text" th:field="*{email}" class="form-control mb-4 col-4" required>
 			<label for="Password">Password</label>
-			<input type="password" th:field="*{password}" class="form-control mb-4 col-4">
+			<input type="password" th:field="*{password}" class="form-control mb-4 col-4" required>
 
-			<!-- Add if statement to check if current user has role of "USER" -->
+			
 			<th:block sec:authorize="hasRole('USER')">
 				<label for="Roles">Roles</label>
 				<select name="roles">
@@ -36,7 +53,7 @@
 				</select>
 			</th:block>
 			
-			<!-- Add else statement for all other users -->
+			
 			<th:block sec:authorize="hasRole('ADMIN')">
 				<label for="Roles" sec:authorize="hasRole('ADMIN')">Roles</label>
 				<select name="roles" sec:authorize="hasRole('ADMIN')">
