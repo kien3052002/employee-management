@@ -64,9 +64,17 @@ public class ContractController {
 	@PostMapping("/saveContract")
 	public String saveEmployee(@ModelAttribute("contract") Contract contract,
 			@RequestParam("id_contract") long id_contract, @RequestParam("department") long id,
-			@RequestParam("signed") String signed, @RequestParam("start") String start,
-			@RequestParam("end") String end) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+			@RequestParam("signed") String signed, @RequestParam("start") String start, @RequestParam("end") String end)
+			throws ParseException {
+		if(contractService.getContractById(id_contract)!=null) {
+			Contract c = contractService.getContractById(id_contract);
+			c.setEmployee(null);
+			Employee e = contractService.getEmployee(id_contract);
+			e.setContract(null);
+			employeeService.saveEmployee(e);
+			contractService.deleteContractById(id_contract);
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		contract.setSignedDate(sdf.parse(signed));
 		contract.setStartDate(sdf.parse(start));
 		contract.setEndDate(sdf.parse(end));
@@ -75,7 +83,10 @@ public class ContractController {
 		contract.setPosition(employeeService.getEmployeeById(id_contract).getPosition());
 		contract.setName(employeeService.getEmployeeById(id_contract).getFirstName() + " "
 				+ employeeService.getEmployeeById(id_contract).getLastName());
-		contract.setDepartmentName(departmentService.getDepartmentById(id).getName());
+		if (departmentService.getDepartmentById(id) == null)
+			contract.setDepartmentName("Not Assigned");
+		else
+			contract.setDepartmentName(departmentService.getDepartmentById(id).getName());
 		contractService.saveContract(contract);
 		return "redirect:/contracts";
 	}
@@ -89,6 +100,7 @@ public class ContractController {
 		none.setId(0);
 		none.setName("(Not Assigned)");
 		departments.add(0, none);
+		model.addAttribute("contract", contract);
 		model.addAttribute("listDepartments", departments);
 		return "update_contract";
 	}
@@ -103,6 +115,7 @@ public class ContractController {
 		this.contractService.deleteContractById(id);
 		return "redirect:/contracts";
 	}
+
 	@GetMapping("/detailsContract/{id}")
 	public String viewDetails(@PathVariable(value = "id") long id, Model model) {
 

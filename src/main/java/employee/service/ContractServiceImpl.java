@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import employee.model.Contract;
+import employee.model.Employee;
 import employee.repository.ContractRepository;
 
 
@@ -15,6 +16,10 @@ public class ContractServiceImpl implements ContractService {
 
 	@Autowired
 	private ContractRepository contractRepository;
+	
+	@Autowired
+	private EmployeeService employeeService;
+	
 	@Override
 	public void saveContract(Contract contract) {
 		this.contractRepository.save(contract);

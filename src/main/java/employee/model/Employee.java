@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -110,7 +111,7 @@ public class Employee {
 			}
 			return monthMap;
 		} catch (Exception e) {
-			return new HashMap<String, HashMap<String, String>>();
+			return newAttendanceMap();
 		}
 	}
 
@@ -143,4 +144,19 @@ public class Employee {
 		jsonWriter.close();
 	}
 
+	public HashMap<String, HashMap<String, String>> newAttendanceMap(){
+		HashMap<String, HashMap<String, String>> map = new HashMap<>();
+		for(int month=1;month<13;month++) {
+			HashMap<String, String> mapDays = new HashMap<>();
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.MONTH, month-1);
+			int maxDays = cal.getActualMaximum(Calendar.DATE);
+			for(int day = 1; day<=maxDays;day++) {
+				mapDays.put(String.format("%02d", day), "-1");
+			}
+			map.put(String.format("%02d", month), mapDays);
+		}
+		return map;
+	}
+	
 }

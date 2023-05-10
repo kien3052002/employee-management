@@ -3,6 +3,7 @@ package employee.service;
 import java.util.List;
 
 import employee.model.Contract;
+import employee.model.Employee;
 
 public interface ContractService {
 	List <Contract> getAllContracts();

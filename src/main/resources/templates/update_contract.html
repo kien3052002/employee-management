@@ -35,6 +35,9 @@
 		<h2>Update Contract</h2>
 
 		<form action="#" th:action="@{/contracts/saveContract}" th:object="${contract}" method="POST">
+			
+			
+			<input type="hidden" th:field="*{id}" />
 			<label for="id">Contract id</label>
 			<select name="id_contract">
 				<option th:value="${contract.getId()}" th:text="${contract.getId()}"></option>
