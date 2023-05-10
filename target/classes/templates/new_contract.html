@@ -9,6 +9,8 @@
 	<link rel="stylesheet" href="/style.css">
 </head>
 
+
+
 <body>
 	<!-- create navigation bar ( header) -->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -45,11 +47,11 @@
 			<br>
 			<br>
 			<label for="signed">Signed date</label>
-			<input type="date" class="form-control  mb-4 col-4" name="signed" autocomplete="off" />
+			<input type="date" class="form-control  mb-4 col-4" name="signed" autocomplete="off" required />
 			<label for="start">Start date</label>
-			<input type="date" class="form-control  mb-4 col-4" name="start" autocomplete="off" />
+			<input type="date" class="form-control  mb-4 col-4" name="start" autocomplete="off" required />
 			<label for="end">End date</label>
-			<input type="date" class="form-control  mb-4 col-4" name="end" autocomplete="off" />
+			<input type="date" class="form-control  mb-4 col-4" name="end" autocomplete="off" required />
 			<label for="department">Department &nbsp;</label>
 			<select name="department">
 
@@ -72,6 +74,31 @@
 
 		<a th:href="@{/contracts}"> Back to Contracts List</a>
 	</div>
+
+
 </body>
+<script type="text/javascript">
+	/*<![CDATA[*/
+	var form = document.querySelector('form');
+	form.addEventListener('submit', function (event) {
+		var signed = document.getElementsByName("signed")[0];
+		signed.addEventListener("change", function () {
+			signed_date = signed.value;
+		});
+		var start = document.getElementsByName("start")[0];
+		start.addEventListener("change", function () {
+			start_date = start.value;
+		});
+		var end = document.getElementsByName("end")[0];
+		end.addEventListener("change", function () {
+			end_date = end.value;
+		});
+		if (signed.value > start.value || start.value > end.value) {
+			alert("Please check your dates!");
+			event.preventDefault();
+		}
+	});
+    /*]]>*/
+</script>
 
 </html>

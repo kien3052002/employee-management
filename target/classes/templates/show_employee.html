@@ -81,9 +81,11 @@
 							th:href="@{employees/deleteEmployee/{id}(id=${employee.id})}"
 							class="btn btn-danger">Delete</a>
 					</td>
-					<td>
-						<a sec:authorize="hasRole('ADMIN')" th:href="@{employees/attend/{id}(id=${employee.id})}"
-							class="btn btn-primary">Chấm Công</a>
+					<td th:if="${employee.contracted==true}">
+						<a th:href="@{employees/attend/{id}/now(id=${employee.id})}" class="btn btn-success"
+							th:if="${employee.attended==false}">Chấm Công</a>
+						<a class="btn btn-success"
+							th:if="${employee.attended==True}" disabled>Chấm Công</a>
 					</td>
 				</tr>
 			</tbody>

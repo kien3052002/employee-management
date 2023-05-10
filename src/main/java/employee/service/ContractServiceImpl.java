@@ -24,6 +24,7 @@ public class ContractServiceImpl implements ContractService {
 	
 	@Override
 	public void saveContract(Contract contract) {
+		
 		Employee employee = contract.getEmployee();
 		HashMap<String, HashMap<String, String>> map = employee.getAttendanceMap();
 		try {
@@ -36,6 +37,12 @@ public class ContractServiceImpl implements ContractService {
 
 	@Override
 	public void deleteContractById(Long id) {
+		Contract contract = this.getContractById(id);
+		contract.setEmployee(null);
+		Employee employee = this.getEmployee(id);
+		employee.setContract(null);
+		employeeService.saveEmployee(employee);
+		employee.deleteAttendanceMap();
 		this.contractRepository.deleteById(id);
 	}
 

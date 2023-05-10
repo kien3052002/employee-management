@@ -37,8 +37,12 @@ public class ContractController {
 	@GetMapping()
 	String viewContractsPage(Model model) {
 		List<Contract> listContracts = contractService.getAllContracts();
+		List<Department> listDepartments = new ArrayList<>();
+		for(Contract c : listContracts) {
+			listDepartments.add(departmentService.getDepartmentById(c.getDepartmentId()));
+		}
 		model.addAttribute("listContracts", listContracts);
-		model.addAttribute("departmentServ", departmentService);
+		model.addAttribute("listDepartments", listDepartments);
 		return "show_contract";
 	}
 
@@ -53,10 +57,6 @@ public class ContractController {
 			}
 		}
 		List<Department> departments = departmentService.getAllDepartments();
-		Department none = new Department();
-		none.setId(0);
-		none.setName("(Not Assigned)");
-		departments.add(0, none);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("contract", contract);
 		model.addAttribute("noContractEmployees", noContractEmployees);
@@ -68,14 +68,7 @@ public class ContractController {
 			@RequestParam("id_contract") long id_contract, @RequestParam("department") long id,
 			@RequestParam("signed") String signed, @RequestParam("start") String start, @RequestParam("end") String end)
 			throws ParseException {
-		if (contractService.getContractById(id_contract) != null) {
-			Contract c = contractService.getContractById(id_contract);
-			c.setEmployee(null);
-			Employee e = contractService.getEmployee(id_contract);
-			e.setContract(null);
-			employeeService.saveEmployee(e);
-			contractService.deleteContractById(id_contract);
-		}
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		contract.setSignedDate(sdf.parse(signed));
 		contract.setStartDate(sdf.parse(start));
@@ -89,6 +82,9 @@ public class ContractController {
 			contract.setDepartmentId(0);
 		else
 			contract.setDepartmentId(id);
+		if (contractService.getContractById(id_contract) != null) {
+			contractService.deleteContractById(id_contract);
+		}
 		contractService.saveContract(contract);
 		return "redirect:/contracts";
 	}
@@ -104,10 +100,6 @@ public class ContractController {
 		}
 		List<Department> departments = departmentService.getAllDepartments();
 		Department currDepartment = departmentService.getDepartmentById(contract.getDepartmentId());
-		Department none = new Department();
-		none.setId(0);
-		none.setName("(Not Assigned)");
-		departments.add(0, none);
 		model.addAttribute("canUpdate", canUpdate);
 		model.addAttribute("contract", contract);
 		model.addAttribute("currDepartment", currDepartment);
@@ -117,11 +109,6 @@ public class ContractController {
 
 	@GetMapping("/deleteContract/{id}")
 	public String deleteContract(@PathVariable(value = "id") long id) {
-		Contract contract = contractService.getContractById(id);
-		contract.setEmployee(null);
-		Employee employee = contractService.getEmployee(id);
-		employee.setContract(null);
-		employeeService.saveEmployee(employee);
 		this.contractService.deleteContractById(id);
 		return "redirect:/contracts";
 	}

@@ -144,24 +144,40 @@ public class Employee {
 		jsonWriter.close();
 	}
 
-	public HashMap<String, HashMap<String, String>> newAttendanceMap(){
+	public HashMap<String, HashMap<String, String>> newAttendanceMap() {
 		HashMap<String, HashMap<String, String>> map = new HashMap<>();
-		for(int month=1;month<13;month++) {
+		for (int month = 1; month < 13; month++) {
 			HashMap<String, String> mapDays = new HashMap<>();
 			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MONTH, month-1);
+			cal.set(Calendar.MONTH, month - 1);
 			int maxDays = cal.getActualMaximum(Calendar.DATE);
-			for(int day = 1; day<=maxDays;day++) {
+			for (int day = 1; day <= maxDays; day++) {
 				mapDays.put(String.format("%02d", day), "-1");
 			}
 			map.put(String.format("%02d", month), mapDays);
 		}
 		return map;
 	}
-	
+
 	public void deleteAttendanceMap() {
-		File map = new File("src/main/resources/attendance/" + String.format("%02d", this.getId())
-					+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
+		File map = new File("src/main/resources/attendance/" + String.format("%02d", this.getId()) + "_"
+				+ this.getFirstName() + "_" + this.getLastName() + ".json");
 		map.delete();
+	}
+
+	public boolean attended() {
+		int date = Dates.currDate();
+		int month = Dates.currMonth();
+		HashMap<String, HashMap<String, String>> map = this.getAttendanceMap();
+		String attendance = map.get(String.format("%02d", month)).get(String.format("%02d", date));
+		if (attendance.equals("1"))
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean contracted() {
+		if(this.getContract()==null) return false;
+		else return true;
 	}
 }

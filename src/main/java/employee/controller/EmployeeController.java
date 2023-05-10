@@ -97,10 +97,10 @@ public class EmployeeController {
 		return "details_employee";
 	}
 
-	@GetMapping(value = { "/attend/{id}", "/attend/{id}/{day}_{month}"})
+	@GetMapping(value = { "/attend/{id}/now", "/attend/{id}/{day}_{month}" })
 	public String attend(@PathVariable(value = "id") long id, Model model,
-			@PathVariable(value = "day") String d,
-			@PathVariable(value = "month") String m) throws FileNotFoundException {
+			@PathVariable(value = "day", required = false) String d,
+			@PathVariable(value = "month", required = false) String m) throws FileNotFoundException {
 		String month;
 		String day;
 		System.out.println(m + d);
@@ -151,7 +151,7 @@ public class EmployeeController {
 		model.addAttribute("currMonth", String.format("%02d", Dates.currMonth()));
 		model.addAttribute("thisDay", Dates.currDate());
 		model.addAttribute("maxDays", Dates.dateIndexLimit());
-		model.addAttribute("weekNum", (n+6) / 7);
+		model.addAttribute("weekNum", (n + 6) / 7);
 		model.addAttribute("attendance", attendance);
 		model.addAttribute("days", days);
 		model.addAttribute("months", months);

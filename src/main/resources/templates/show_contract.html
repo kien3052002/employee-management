@@ -56,18 +56,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="contract : ${listContracts}">
-					<td th:text="${contract.id}"></td>
-					<td th:text="${contract.getDateString(contract.signedDate)}"></td>
-					<td th:text="${departmentServ.getDepartmentById(contract.departmentId).name}"></td>
+				<tr th:each="i:  ${#numbers.sequence(0, listContracts.size()-1)}" th:if="${listContracts.size()>0}">
+					<td th:text="${listContracts.get(i).id}"></td>
+					<td th:text="${listContracts.get(i).getDateString(listContracts.get(i).signedDate)}"></td>
+					<td th:text="${listDepartments.get(i).name}"></td>
 					<td>
-						<a th:href="@{contracts/detailsContract/{id}(id=${contract.id})}"
+						<a th:href="@{contracts/detailsContract/{id}(id=${listContracts.get(i).id})}"
 							class="btn btn-primary">Details</a>
 						<a sec:authorize="hasRole('ADMIN')"
-							th:href="@{contracts/updateContract/{id}(id=${contract.id})}"
+							th:href="@{contracts/updateContract/{id}(id=${listContracts.get(i).id})}"
 							class="btn btn-primary">Update</a>
 						<a sec:authorize="hasRole('ADMIN')"
-							th:href="@{contracts/deleteContract/{id}(id=${contract.id})}"
+							th:href="@{contracts/deleteContract/{id}(id=${listContracts.get(i).id})}"
 							class="btn btn-danger">Delete</a>
 					</td>
 				</tr>
