@@ -84,15 +84,25 @@ public class ContractController {
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
 		Contract contract = contractService.getContractById(id);
 		model.addAttribute("contract", contract);
+		List<Department> departments = departmentService.getAllDepartments();
+		Department none = new Department();
+		none.setId(0);
+		none.setName("(Not Assigned)");
+		departments.add(0, none);
+		model.addAttribute("listDepartments", departments);
 		return "update_contract";
 	}
 
 	@GetMapping("/deleteContract/{id}")
 	public String deleteContract(@PathVariable(value = "id") long id) {
+		Contract contract = contractService.getContractById(id);
+		contract.setEmployee(null);
+		Employee employee = contractService.getEmployee(id);
+		employee.setContract(null);
+		employeeService.saveEmployee(employee);
 		this.contractService.deleteContractById(id);
 		return "redirect:/contracts";
 	}
-
 	@GetMapping("/detailsContract/{id}")
 	public String viewDetails(@PathVariable(value = "id") long id, Model model) {
 
