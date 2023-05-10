@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MonthCalendar {
+public class Dates {
 	public static List<String> daysOfMonth(int month) {
 
 		LocalDate min = firstDay(month);

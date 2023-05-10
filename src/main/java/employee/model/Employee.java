@@ -1,5 +1,6 @@
 package employee.model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,7 +33,6 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
-import lombok.extern.java.Log;
 
 @Data
 @Entity
@@ -159,4 +159,9 @@ public class Employee {
 		return map;
 	}
 	
+	public void deleteAttendanceMap() {
+		File map = new File("src/main/resources/attendance/" + String.format("%02d", this.getId())
+					+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
+		map.delete();
+	}
 }

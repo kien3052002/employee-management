@@ -1,7 +1,9 @@
 package employee.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import employee.service.DepartmentService;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -38,8 +41,8 @@ public class Contract {
 	private Date endDate;
 
 	// Tên phòng ban
-	@Column(name = "department_name")
-	private String departmentName;
+	@Column(name = "department_id")
+	private long departmentId;
 
 	// Chức vụ
 	private String position;
@@ -53,6 +56,10 @@ public class Contract {
 	// Lương theo ngày
 	@Column(name = "daily_wage")
 	private long dailyWage;
-
+	
+	public String getDateString(Date date) {
+		String s = new SimpleDateFormat("yyyy-MM-dd ss-mm-hh").format(date).split(" ")[0];
+		return s;
+	}
 	
 }

@@ -58,8 +58,8 @@
 			<tbody>
 				<tr th:each="contract : ${listContracts}">
 					<td th:text="${contract.id}"></td>
-					<td th:text="${contract.signedDate}"></td>
-					<td th:text="${contract.departmentName}"></td>
+					<td th:text="${contract.getDateString(contract.signedDate)}"></td>
+					<td th:text="${departmentServ.getDepartmentById(contract.departmentId).name}"></td>
 					<td>
 						<a th:href="@{contracts/detailsContract/{id}(id=${contract.id})}"
 							class="btn btn-primary">Details</a>

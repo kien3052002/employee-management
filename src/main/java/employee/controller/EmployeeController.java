@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import employee.model.Dates;
 import employee.model.Department;
 import employee.model.Employee;
-import employee.model.MonthCalendar;
 import employee.service.DepartmentService;
 import employee.service.EmployeeService;
 
@@ -126,14 +126,14 @@ public class EmployeeController {
 			@PathVariable(value = "month", required = false) String m, Model model) {
 		int month;
 		if (m.equals("now"))
-			month = MonthCalendar.currMonth() - 1;
+			month = Dates.currMonth() - 1;
 		else
 			month = Integer.valueOf(m) - 1;
 		if (month < 0 || month > 12)
 			return null;
 
 		Employee employee = employeeService.getEmployeeById(id);
-		List<String> calDays = MonthCalendar.daysOfMonth(month);
+		List<String> calDays = Dates.daysOfMonth(month);
 		HashMap<String, HashMap<String, String>> attendanceMap = employee.getAttendanceMap();
 		int n = calDays.size();
 		String[] days = new String[n];
@@ -148,9 +148,9 @@ public class EmployeeController {
 			else
 				attendance[i] = Integer.valueOf(attendanceMap.get(months[i]).get(days[i]));
 		}
-		model.addAttribute("currMonth", String.format("%02d", MonthCalendar.currMonth()));
-		model.addAttribute("thisDay", MonthCalendar.currDate());
-		model.addAttribute("maxDays", MonthCalendar.dateIndexLimit());
+		model.addAttribute("currMonth", String.format("%02d", Dates.currMonth()));
+		model.addAttribute("thisDay", Dates.currDate());
+		model.addAttribute("maxDays", Dates.dateIndexLimit());
 		model.addAttribute("weekNum", (n+6) / 7);
 		model.addAttribute("attendance", attendance);
 		model.addAttribute("days", days);

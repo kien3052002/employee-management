@@ -38,6 +38,7 @@ public class ContractController {
 	String viewContractsPage(Model model) {
 		List<Contract> listContracts = contractService.getAllContracts();
 		model.addAttribute("listContracts", listContracts);
+		model.addAttribute("departmentServ", departmentService);
 		return "show_contract";
 	}
 
@@ -85,9 +86,9 @@ public class ContractController {
 		contract.setName(employeeService.getEmployeeById(id_contract).getFirstName() + " "
 				+ employeeService.getEmployeeById(id_contract).getLastName());
 		if (departmentService.getDepartmentById(id) == null)
-			contract.setDepartmentName("Not Assigned");
+			contract.setDepartmentId(0);
 		else
-			contract.setDepartmentName(departmentService.getDepartmentById(id).getName());
+			contract.setDepartmentId(id);
 		contractService.saveContract(contract);
 		return "redirect:/contracts";
 	}
@@ -102,12 +103,14 @@ public class ContractController {
 			canUpdate = false;
 		}
 		List<Department> departments = departmentService.getAllDepartments();
+		Department currDepartment = departmentService.getDepartmentById(contract.getDepartmentId());
 		Department none = new Department();
 		none.setId(0);
 		none.setName("(Not Assigned)");
 		departments.add(0, none);
 		model.addAttribute("canUpdate", canUpdate);
 		model.addAttribute("contract", contract);
+		model.addAttribute("currDepartment", currDepartment);
 		model.addAttribute("listDepartments", departments);
 		return "update_contract";
 	}
@@ -127,7 +130,9 @@ public class ContractController {
 	public String viewDetails(@PathVariable(value = "id") long id, Model model) {
 
 		Contract contract = contractService.getContractById(id);
+		Department department = departmentService.getDepartmentById(contract.getDepartmentId());
 		model.addAttribute("contract", contract);
+		model.addAttribute("department", department);
 		return "details_contract";
 	}
 

@@ -86,7 +86,7 @@ public class DepartmentController {
 				if(contractService.getContractById((currChiefId))!=null) {
 					contract = contractService.getContractById((currChiefId));
 					contract.setPosition("Employee");
-					contract.setDepartmentName(department.getName());
+					contract.setDepartmentId(department.getId());
 					contractService.saveContract(contract);
 				}
 			}
@@ -95,7 +95,7 @@ public class DepartmentController {
 				if(contractService.getContractById(Long.parseLong(chiefId))!=null) {
 					contract = contractService.getContractById(Long.parseLong(chiefId));
 					contract.setPosition("Chief");
-					contract.setDepartmentName(department.getName());
+					contract.setDepartmentId(department.getId());
 					contractService.saveContract(contract);
 				}
 				employeeService.saveEmployee(chief);
