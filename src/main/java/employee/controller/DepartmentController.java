@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import employee.model.Department;
 import employee.model.Employee;
+import employee.model.Contract;
+import employee.service.ContractService;
 import employee.service.DepartmentService;
 import employee.service.EmployeeService;
 
@@ -26,7 +28,10 @@ public class DepartmentController {
 
 	@Autowired
 	private EmployeeService employeeService;
-
+	
+	@Autowired
+	private ContractService contractService;
+	
 	@GetMapping()
 	String showDepartmentsPage(Model model) {
 		List<Department> listDepartments = departmentService.getAllDepartments();
@@ -75,8 +80,24 @@ public class DepartmentController {
 			employeeService.saveEmployee(currChief);
 		}
 		if (chief != null) {
+			Contract contract;
+			if (currChief != null) {
+				Long currChiefId = currChief.getId();
+				if(contractService.getContractById((currChiefId))!=null) {
+					contract = contractService.getContractById((currChiefId));
+					contract.setPosition("Employee");
+					contract.setDepartmentName(department.getName());
+					contractService.saveContract(contract);
+				}
+			}
 			if (chief.getDepartment() != null && chief.getDepartment().equals(department)) {
 				chief.setPosition("Chief");
+				if(contractService.getContractById(Long.parseLong(chiefId))!=null) {
+					contract = contractService.getContractById(Long.parseLong(chiefId));
+					contract.setPosition("Chief");
+					contract.setDepartmentName(department.getName());
+					contractService.saveContract(contract);
+				}
 				employeeService.saveEmployee(chief);
 			}
 		}

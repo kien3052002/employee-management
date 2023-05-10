@@ -9,4 +9,5 @@ public interface ContractService {
 	Contract getContractById(long id);
 	void saveContract(Contract contract);
 	void deleteContractById(Long id);
+	Employee getEmployee(long id);
 }
