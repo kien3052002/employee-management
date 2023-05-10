@@ -15,6 +15,9 @@ import employee.repository.ContractRepository;
 
 @Service
 public class ContractServiceImpl implements ContractService {
+	
+	@Autowired
+	private DepartmentService departmentService;
 
 	@Autowired
 	private ContractRepository contractRepository;
@@ -27,6 +30,7 @@ public class ContractServiceImpl implements ContractService {
 		
 		Employee employee = contract.getEmployee();
 		HashMap<String, HashMap<String, String>> map = employee.getAttendanceMap();
+		employee.setDepartment(departmentService.getDepartmentById(contract.getDepartmentId()));;
 		try {
 			employee.setAttendanceMap(map);
 		} catch (FileNotFoundException e) {

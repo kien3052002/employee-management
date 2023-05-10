@@ -45,22 +45,16 @@ public class EmployeeController {
 	public String showNewEmployeeForm(Model model) {
 		Employee employee = new Employee();
 		List<Department> departments = departmentService.getAllDepartments();
-		Department none = new Department();
-		none.setId(0);
-		none.setName("(Not Assigned)");
-		departments.add(0, none);
-		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "new_employee";
 	}
 
 	@PostMapping("/saveEmployee")
-	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("department") long id,
-			@RequestParam("date") String dob) throws ParseException {
+	public String saveEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("date") String dob)
+			throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
 		employee.setDob(date);
 		employee.setFullName(employee.getFirstName() + " " + employee.getLastName());
-		employee.setDepartment(departmentService.getDepartmentById(id));
 		employee.setPosition("Employee");
 		employeeService.saveEmployee(employee);
 		return "redirect:/employees";
@@ -70,12 +64,6 @@ public class EmployeeController {
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
 
 		Employee employee = employeeService.getEmployeeById(id);
-		List<Department> departments = departmentService.getAllDepartments();
-		Department none = new Department();
-		none.setId(0);
-		none.setName("<Not Assigned>");
-		departments.add(0, none);
-		model.addAttribute("listDepartments", departments);
 		model.addAttribute("employee", employee);
 		return "update_employee";
 	}

@@ -56,13 +56,6 @@
 			<input type="radio" th:field="*{gender}" value="Female" id="Female">
 
 			<br>
-			<label for="department">Department &nbsp;</label>
-			<select name="department">
-
-				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}"></option>
-
-			</select>
-			<br>
 			<br>
 			<button type="submit" class="btn btn-info col-2"> Save Employee</button>
 		</form>
@@ -72,17 +65,6 @@
 
 		<a th:href="@{/employees}"> Back to Employee List</a>
 	</div>
-	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-	<script th:src="@{assets/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
-
-	<script>
-		$('.input-group.date').datepicker({
-			autoclose: true,
-			todayHighlight: true
-		});
-	</script>
 </body>
 
 </html>

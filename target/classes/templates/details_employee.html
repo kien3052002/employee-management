@@ -97,6 +97,8 @@
 			th:if="${employee.contracted==true}">Contract</a>
 		<a sec:authorize="hasRole('ADMIN')" th:href="@{/contracts/newContract/{id}(id=${employee.id})}"
 			class="btn btn-primary" th:if="${employee.contracted==false}">New Contract</a>
+		<a sec:authorize="hasRole('ADMIN')" th:href="@{/contracts/updateContract/{id}(id=${employee.id})}" class="btn btn-primary"
+			th:if="${employee.contracted==true}">Edit Contract</a>
 	</div>
 </body>
 

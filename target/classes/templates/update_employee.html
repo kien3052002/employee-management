@@ -56,14 +56,7 @@
 			<input type="radio" th:field="*{gender}" value="Male" id="Male">
 			<labe for="Female">Female</labe>
 			<input type="radio" th:field="*{gender}" value="Female" id="Female">
-			<br>
-			<label for="department">Department &nbsp;</label>
-			<select name="department">
-
-				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}"
-					th:selected="${d}==*{department}"></option>
-
-			</select>
+			
 			<br>
 			<br>
 			<button type="submit" class="btn btn-info col-2"> Save Employee</button>

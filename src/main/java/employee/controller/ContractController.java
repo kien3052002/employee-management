@@ -38,7 +38,7 @@ public class ContractController {
 	String viewContractsPage(Model model) {
 		List<Contract> listContracts = contractService.getAllContracts();
 		List<Department> listDepartments = new ArrayList<>();
-		for(Contract c : listContracts) {
+		for (Contract c : listContracts) {
 			listDepartments.add(departmentService.getDepartmentById(c.getDepartmentId()));
 		}
 		model.addAttribute("listContracts", listContracts);
@@ -46,16 +46,19 @@ public class ContractController {
 		return "show_contract";
 	}
 
-	@GetMapping("/newContract")
-	public String showNewContractForm(Model model) {
+	@GetMapping(value = { "/newContract", "/newContract/{id}" })
+	public String showNewContractForm(Model model, @PathVariable(value = "id", required = false) String id) {
 		Contract contract = new Contract();
 		List<Employee> employees = employeeService.getAllEmployees();
 		List<Employee> noContractEmployees = new ArrayList<Employee>();
-		for (Employee e : employees) {
-			if (contractService.getContractById(e.getId()) == null) {
-				noContractEmployees.add(e);
+		if (id == null)
+			for (Employee e : employees) {
+				if (contractService.getContractById(e.getId()) == null) {
+					noContractEmployees.add(e);
+				}
 			}
-		}
+		else
+			noContractEmployees.add(employeeService.getEmployeeById(Integer.valueOf(id)));
 		List<Department> departments = departmentService.getAllDepartments();
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("contract", contract);
@@ -68,20 +71,16 @@ public class ContractController {
 			@RequestParam("id_contract") long id_contract, @RequestParam("department") long id,
 			@RequestParam("signed") String signed, @RequestParam("start") String start, @RequestParam("end") String end)
 			throws ParseException {
-		
+		Employee employee = employeeService.getEmployeeById(id_contract);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		contract.setSignedDate(sdf.parse(signed));
 		contract.setStartDate(sdf.parse(start));
 		contract.setEndDate(sdf.parse(end));
 		contract.setId(id_contract);
-		contract.setEmployee(employeeService.getEmployeeById(id_contract));
-		contract.setPosition(employeeService.getEmployeeById(id_contract).getPosition());
-		contract.setName(employeeService.getEmployeeById(id_contract).getFirstName() + " "
-				+ employeeService.getEmployeeById(id_contract).getLastName());
-		if (departmentService.getDepartmentById(id) == null)
-			contract.setDepartmentId(0);
-		else
-			contract.setDepartmentId(id);
+		contract.setEmployee(employee);
+		contract.setPosition(employee.getPosition());
+		contract.setName(employee.getFirstName() + " " + employee.getLastName());
+		contract.setDepartmentId(id);
 		if (contractService.getContractById(id_contract) != null) {
 			contractService.deleteContractById(id_contract);
 		}
