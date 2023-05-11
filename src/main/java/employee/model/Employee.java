@@ -80,13 +80,10 @@ public class Employee {
 		return s;
 	}
 
-	@Transient
-	private HashMap<String, HashMap<String, String>> attendanceMap;
 
 	public HashMap<String, HashMap<String, String>> getAttendanceMap() {
 		try {
-			InputStream fis = new FileInputStream("src/main/resources/attendance/" + String.format("%02d", this.getId())
-					+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
+			InputStream fis = new FileInputStream("src/main/resources/attendance/attendance-" + String.format("%02d", this.getId()) + ".json");
 			JsonReader jsonReader = Json.createReader(fis);
 			JsonObject jsonObject = jsonReader.readObject();
 
@@ -135,8 +132,7 @@ public class Employee {
 		}
 
 		JsonObject jsonObject = monthBuilder.build();
-		OutputStream os = new FileOutputStream("src/main/resources/attendance/" + String.format("%02d", this.getId())
-				+ "_" + this.getFirstName() + "_" + this.getLastName() + ".json");
+		OutputStream os = new FileOutputStream("src/main/resources/attendance/attendance-" + String.format("%02d", this.getId()) + ".json");
 		JsonWriter jsonWriter = Json.createWriter(os);
 		HashMap<String, Boolean> config = new HashMap<String, Boolean>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
@@ -189,8 +185,7 @@ public class Employee {
 	}
 
 	public void deleteAttendanceMap() {
-		File map = new File("src/main/resources/attendance/" + String.format("%02d", this.getId()) + "_"
-				+ this.getFirstName() + "_" + this.getLastName() + ".json");
+		File map = new File("src/main/resources/attendance/attendance-" + String.format("%02d", this.getId()) + ".json");
 		map.delete();
 	}
 
@@ -216,11 +211,6 @@ public class Employee {
 		long dailyWage = this.getContract().getDailyWage();
 		long salary = 0;
 		HashMap<String, String> map = this.getAttendanceMap().get(month);
-//		String contractStartDate = this.getContract().getDateString(this.getContract().getStartDate()).split("-")[2];
-//		String contractStartMonth = this.getContract().getDateString(this.getContract().getStartDate()).split("-")[1];
-//		String contractEndDate = this.getContract().getDateString(this.getContract().getEndDate()).split("-")[2];
-//		String contractEndMonth = this.getContract().getDateString(this.getContract().getEndDate()).split("-")[1];
-//		if (month.compareTo(contractStartMonth) >= 0 && month.compareTo(contractEndMonth) <= 0)
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, Integer.valueOf(month)-1);
 		int maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);

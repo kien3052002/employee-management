@@ -25,9 +25,6 @@ public class Contract {
 	@Column(name = "employee_id")
 	private long id;
 
-	@Column(name = "name")
-	private String name;
-
 	// Ngày kí hợp đông
 	@Column(name = "signed_date")
 	private Date signedDate;

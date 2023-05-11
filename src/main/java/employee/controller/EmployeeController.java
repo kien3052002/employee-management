@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import employee.model.Contract;
 import employee.model.Dates;
 import employee.model.Department;
 import employee.model.Employee;
+import employee.service.ContractService;
 import employee.service.DepartmentService;
 import employee.service.EmployeeService;
 
@@ -33,6 +35,9 @@ public class EmployeeController {
 
 	@Autowired
 	private DepartmentService departmentService;
+	
+	@Autowired
+	private ContractService contractService;
 
 	@GetMapping
 	public String viewEmployeePage(Model model) {
@@ -56,13 +61,18 @@ public class EmployeeController {
 		employee.setDob(date);
 		employee.setFullName(employee.getFirstName() + " " + employee.getLastName());
 		employee.setPosition("Employee");
+		Contract contract = contractService.getContractById(employee.getId()); 
+		if(contract!=null) {
+			Department department = departmentService.getDepartmentById(contract.getDepartmentId());
+//			employee.setContract(contract);
+			employee.setDepartment(department);
+		}
 		employeeService.saveEmployee(employee);
 		return "redirect:/employees";
 	}
 
 	@GetMapping("/updateEmployee/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
-
 		Employee employee = employeeService.getEmployeeById(id);
 		model.addAttribute("employee", employee);
 		return "update_employee";
@@ -117,7 +127,7 @@ public class EmployeeController {
 		if (hr > 15) {
 			if (min > 15)
 				value = "0";
-		} else if (hr > 11) {
+		} else if (hr > 10) {
 			if (min > 15)
 				value = "0.5";
 		}
@@ -176,7 +186,7 @@ public class EmployeeController {
 		model.addAttribute("contractED", contractEndDate);
 		model.addAttribute("contractEM", contractEndMonth);
 		model.addAttribute("currMonth", String.format("%02d", Dates.currMonth()));
-		model.addAttribute("thisDay", Dates.currDate());
+		model.addAttribute("currDay", String.format("%02d", Dates.currDate()));
 		model.addAttribute("maxDays", Dates.dateIndexLimit());
 		model.addAttribute("weekNum", (n + 6) / 7);
 		model.addAttribute("attendance", attendance);

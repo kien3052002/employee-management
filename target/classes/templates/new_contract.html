@@ -58,12 +58,18 @@
 				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}"></option>
 
 			</select>
+			<label for="position">Position</label>
+			<select th:field="*{position}">
+				<option th:value="Employee" th:text="Employee"></option>
+				<option th:value="Chief" th:text="Chief"></option>
+			</select>
 			<br>
 			<br>
-			<label for="DailyWage">Daily wage</label>
+			<label for="dailyWage">Daily wage</label>
 			<select name="dailyWage">
-				<option th:value=100000 th:text="100000"></option>
-				<option th:value=150000 th:text="150000"></option>
+				<option th:value=500000 th:text="500000"></option>
+				<option th:value=450000 th:text="450000"></option>
+				<option th:value=400000 th:text="400000"></option>
 			</select>
 			<br>
 			<br>
