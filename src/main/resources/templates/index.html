@@ -33,21 +33,22 @@
 	<div></div>
 	<br>
 	<br>
-
+	<img th:src="@{/images/background.jpeg}" class="background">
 	<div class="container my-2">
-
-		<br>
-		<br>
-		<a th:href="@{/employees}" class="btn btn-primary btn-sm mb-3"> Show Employees </a>
-		<br>
-		<br>
-		<a th:href="@{/users}" class="btn btn-primary btn-sm mb-3"> Show Users </a>
-		<br>
-		<br>
-		<a th:href="@{/departments}" class="btn btn-primary btn-sm mb-3"> Show Departments </a>
-		<br>
-		<br>
-		<a th:href = "@{/contracts}" class="btn btn-primary btn-sm mb-3"> Show Contracts </a>
+		<div class="menu">
+			<br>
+			<br>
+			<a th:href="@{/employees}" class="btn btn-primary btn-sm mb-3 menu-btn">Employees</a>
+			<br>
+			<br>
+			<a th:href="@{/users}" class="btn btn-primary btn-sm mb-3 menu-btn">Users</a>
+			<br>
+			<br>
+			<a th:href="@{/departments}" class="btn btn-primary btn-sm mb-3 menu-btn">Departments</a>
+			<br>
+			<br>
+			<a th:href="@{/contracts}" class="btn btn-primary btn-sm mb-3 menu-btn">Contracts</a>
+		</div>
 	</div>
 </body>
 

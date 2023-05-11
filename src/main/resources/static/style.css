@@ -60,3 +60,32 @@ input[type= text], input[type=email], input[type=date] {
 .not-work{
 	background-color: coral;
 }
+
+.menu{
+	padding: 50px;
+	border-radius: 30px;
+	margin: auto;
+	margin-top: 100px;
+	display: table;
+	width: 900px;
+	height: 600px;
+	background-color: white;
+	
+}
+
+.menu-btn{
+	
+	font-size: 25px;
+	font-weight: bold;
+	
+	line-height: 100px;
+	height: 100px;
+	width: 300px;
+}
+
+.background{
+	z-index: -1;
+	position: fixed;
+	width: 1700px;
+	opacity: 0.5;
+}
