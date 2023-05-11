@@ -89,21 +89,37 @@ public class EmployeeController {
 	public String attend(@PathVariable(value = "id") long id, Model model,
 			@PathVariable(value = "day", required = false) String d,
 			@PathVariable(value = "month", required = false) String m) throws FileNotFoundException {
+		
+		Calendar cal = Calendar.getInstance();
+		int wd = cal.get(Calendar.DAY_OF_WEEK);
+		if (wd == 1 || wd == 7) {
+			return null;
+		}
 		String month;
 		String day;
 		System.out.println(m + d);
 		if (d == null && m == null) {
-			Calendar cal = Calendar.getInstance();
+			
 			month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
 			day = String.format("%02d", cal.get(Calendar.DATE));
 		} else {
 			month = m;
 			day = d;
 		}
+		String value="1";
+		int hr = cal.get(Calendar.HOUR_OF_DAY);
+		int min = cal.get(Calendar.MINUTE);
+		if(hr>15) {
+			if(min > 15) value="0"; 
+		}
+		else if(hr>11) {
+			if(min>15) value="0.5";
+		}
 		Employee employee = employeeService.getEmployeeById(id);
 		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
 		HashMap<String, String> mapDay = mapMonth.getOrDefault(month, new HashMap<String, String>());
-		mapDay.put(day, "1");
+		employee.attendanceMapUpdate();
+		mapDay.put(day,value);
 		mapMonth.put(month, mapDay);
 		employee.setAttendanceMap(mapMonth);
 		return "redirect:/employees";
@@ -126,16 +142,24 @@ public class EmployeeController {
 		int n = calDays.size();
 		String[] days = new String[n];
 		String[] months = new String[n];
-		int[] attendance = new int[n];
+		String[] attendance = new String[n];
 
 		for (int i = 0; i < n; i++) {
 			days[i] = calDays.get(i).split("-")[2];
 			months[i] = calDays.get(i).split("-")[1];
 			if (attendanceMap.get(months[i]) == null || attendanceMap.get(months[i]).get(days[i]) == null)
-				attendance[i] = -1;
+				attendance[i] = "-1";
 			else
-				attendance[i] = Integer.valueOf(attendanceMap.get(months[i]).get(days[i]));
+				attendance[i] = attendanceMap.get(months[i]).get(days[i]);
 		}
+		String contractStartDate = employee.getContract().getDateString(employee.getContract().getStartDate()).split("-")[2];
+		String contractStartMonth = employee.getContract().getDateString(employee.getContract().getStartDate()).split("-")[1];
+		String contractEndDate = employee.getContract().getDateString(employee.getContract().getEndDate()).split("-")[2];
+		String contractEndMonth = employee.getContract().getDateString(employee.getContract().getEndDate()).split("-")[1];
+		model.addAttribute("contractSD", contractStartDate);
+		model.addAttribute("contractSM", contractStartMonth);
+		model.addAttribute("contractED", contractEndDate);
+		model.addAttribute("contractEM", contractEndMonth);
 		model.addAttribute("currMonth", String.format("%02d", Dates.currMonth()));
 		model.addAttribute("thisDay", Dates.currDate());
 		model.addAttribute("maxDays", Dates.dateIndexLimit());

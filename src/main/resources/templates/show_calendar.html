@@ -62,19 +62,28 @@
 				<th>FRI</th>
 				<th>SAT</th>
 				<tr th:each="i: ${#numbers.sequence(0, weekNum-1)}">
-					<td th:each="k : ${#numbers.sequence(0, 6)}" class="cell"
+					<td th:each="k : ${#numbers.sequence(0, 6)}" 
 						th:classappend="${months[k+i*7]} != ${thisMonth} ? cell-disabled : cell-abled">
-						<div class="cell">
+						<div class="cell"
+							th:if="${(months[k+i*7].compareTo(contractSM) >0 OR (months[k+i*7].compareTo(contractSM) ==0 AND days[k+i*7].compareTo(contractSD)>=0)) AND (months[k+i*7].compareTo(contractEM) < 0 OR (months[k+i*7].compareTo(contractEM) ==0 AND days[k+i*7].compareTo(contractED)<=0))}">
 
 							<a th:if="${months[k+i*7].compareTo(currMonth) < 0 OR (k+i*7 &lt;= maxDays AND months[k+i*7].compareTo(currMonth) == 0)}"
 								th:href="@{/employees/attend/{id}/{day}_{month}(id=${employee.id}, day = ${days[k+i*7]}, month=${months[k+1*7]})}"><span
 									th:text="${days[k+i*7]}"></span>/<span th:text="${months[k+i*7]}"></span></a>
 							<a th:if="${months[k+i*7].compareTo(currMonth) > 0 OR (k+i*7 &gt; maxDays AND months[k+i*7].compareTo(currMonth) == 0)}"
-								
 								style="text-decoration: none; color: black;"><span
 									th:text="${days[k+i*7]}"></span>/<span th:text="${months[k+i*7]}"></span></a>
-							<img th:src="@{/images/marked.png}" class="attend-icon" th:if="${attendance[k+i*7]==1}" />
-							<img th:src="@{/images/missed.png}" class="attend-icon" th:if="${attendance[k+i*7]==0}" />
+							<img th:src="@{/images/marked.png}" class="attend-icon"
+								th:if="${attendance[k+i*7]=='1' AND (k+i*7 &lt;= maxDays)}" />
+							<img th:src="@{/images/missed.png}" class="attend-icon" th:if="${attendance[k+i*7]=='0'}" />
+							<img th:src="@{/images/marked.png}" class="attend-icon"
+								th:if="${attendance[k+i*7]=='0.5' AND (k+i*7 &lt;= maxDays)}" />
+						</div>
+						<div class="cell not-work"
+							th:unless="${(months[k+i*7].compareTo(contractSM) >0 OR (months[k+i*7].compareTo(contractSM) ==0 AND days[k+i*7].compareTo(contractSD)>=0)) AND (months[k+i*7].compareTo(contractEM) < 0 OR (months[k+i*7].compareTo(contractEM) ==0 AND days[k+i*7].compareTo(contractED)<=0))}">
+							<a style="text-decoration: none; color: black;">
+								<span th:text="${days[k+i*7]}"></span>/<span th:text="${months[k+i*7]}"></span>
+							</a>
 						</div>
 					</td>
 				</tr>

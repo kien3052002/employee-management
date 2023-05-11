@@ -1,4 +1,9 @@
 
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 
 .cell-disabled{
 	background-color: grey;
@@ -18,7 +23,8 @@
 	width: 100px;
 	height: 70px;
 	position: relative;
-	margin-right: 0
+	margin-right: 0;
+	font-size: large;
 }
 
 th {
@@ -49,4 +55,8 @@ table{
 
 input[type= text], input[type=email], input[type=date] {
 	width: 400px;
+}
+
+.not-work{
+	background-color: coral;
 }
