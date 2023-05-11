@@ -60,6 +60,16 @@ public class ContractController {
 		else
 			noContractEmployees.add(employeeService.getEmployeeById(Integer.valueOf(id)));
 		List<Department> departments = departmentService.getAllDepartments();
+		List<Boolean> hasChief=new ArrayList<>();
+		for(Department d: departments) {
+			if(departmentService.getChief(d.getId())!=null) {
+				hasChief.add(true);
+			}
+			else {
+				hasChief.add(false);
+			}
+		}
+		model.addAttribute("hasChief", hasChief);
 		model.addAttribute("listDepartments", departments);
 		model.addAttribute("contract", contract);
 		model.addAttribute("noContractEmployees", noContractEmployees);
@@ -91,8 +101,18 @@ public class ContractController {
 		Contract contract = contractService.getContractById(id);
 		List<Department> departments = departmentService.getAllDepartments();
 		Department currDepartment = departmentService.getDepartmentById(contract.getDepartmentId());
+		List<Boolean> hasChief=new ArrayList<>();
+		for(Department d: departments) {
+			if(departmentService.getChief(d.getId())!=null) {
+				hasChief.add(true);
+			}
+			else {
+				hasChief.add(false);
+			}
+		}
 		model.addAttribute("contract", contract);
 		model.addAttribute("currDepartment", currDepartment);
+		model.addAttribute("hasChief", hasChief);
 		model.addAttribute("listDepartments", departments);
 		return "update_contract";
 	}
