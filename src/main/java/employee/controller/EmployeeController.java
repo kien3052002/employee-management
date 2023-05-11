@@ -78,9 +78,14 @@ public class EmployeeController {
 
 	@GetMapping("/detailsEmployee/{id}")
 	public String viewDetails(@PathVariable(value = "id") long id, Model model) {
-
+		String month = String.format("%02d", Dates.currMonth());
 		Employee employee = employeeService.getEmployeeById(id);
+		String salary = "Not Contracted";
+		if (employee.contracted()) {
+			salary = String.valueOf(employee.getSalary(month));
+		}
 
+		model.addAttribute("salary", salary);
 		model.addAttribute("employee", employee);
 		return "details_employee";
 	}
@@ -89,7 +94,7 @@ public class EmployeeController {
 	public String attend(@PathVariable(value = "id") long id, Model model,
 			@PathVariable(value = "day", required = false) String d,
 			@PathVariable(value = "month", required = false) String m) throws FileNotFoundException {
-		
+
 		Calendar cal = Calendar.getInstance();
 		int wd = cal.get(Calendar.DAY_OF_WEEK);
 		if (wd == 1 || wd == 7) {
@@ -99,27 +104,28 @@ public class EmployeeController {
 		String day;
 		System.out.println(m + d);
 		if (d == null && m == null) {
-			
+
 			month = String.format("%02d", cal.get(Calendar.MONTH) + 1);
 			day = String.format("%02d", cal.get(Calendar.DATE));
 		} else {
 			month = m;
 			day = d;
 		}
-		String value="1";
+		String value = "1";
 		int hr = cal.get(Calendar.HOUR_OF_DAY);
 		int min = cal.get(Calendar.MINUTE);
-		if(hr>15) {
-			if(min > 15) value="0"; 
-		}
-		else if(hr>11) {
-			if(min>15) value="0.5";
+		if (hr > 15) {
+			if (min > 15)
+				value = "0";
+		} else if (hr > 11) {
+			if (min > 15)
+				value = "0.5";
 		}
 		Employee employee = employeeService.getEmployeeById(id);
 		HashMap<String, HashMap<String, String>> mapMonth = employee.getAttendanceMap();
 		HashMap<String, String> mapDay = mapMonth.getOrDefault(month, new HashMap<String, String>());
 		employee.attendanceMapUpdate();
-		mapDay.put(day,value);
+		mapDay.put(day, value);
 		mapMonth.put(month, mapDay);
 		employee.setAttendanceMap(mapMonth);
 		return "redirect:/employees";
@@ -137,6 +143,7 @@ public class EmployeeController {
 			return null;
 
 		Employee employee = employeeService.getEmployeeById(id);
+		if (!employee.contracted()) return null;
 		List<String> calDays = Dates.daysOfMonth(month);
 		HashMap<String, HashMap<String, String>> attendanceMap = employee.getAttendanceMap();
 		int n = calDays.size();
@@ -152,10 +159,18 @@ public class EmployeeController {
 			else
 				attendance[i] = attendanceMap.get(months[i]).get(days[i]);
 		}
-		String contractStartDate = employee.getContract().getDateString(employee.getContract().getStartDate()).split("-")[2];
-		String contractStartMonth = employee.getContract().getDateString(employee.getContract().getStartDate()).split("-")[1];
-		String contractEndDate = employee.getContract().getDateString(employee.getContract().getEndDate()).split("-")[2];
-		String contractEndMonth = employee.getContract().getDateString(employee.getContract().getEndDate()).split("-")[1];
+		String contractStartDate = employee.getContract().getDateString(employee.getContract().getStartDate())
+				.split("-")[2];
+		String contractStartMonth = employee.getContract().getDateString(employee.getContract().getStartDate())
+				.split("-")[1];
+		String contractEndDate = employee.getContract().getDateString(employee.getContract().getEndDate())
+				.split("-")[2];
+		String contractEndMonth = employee.getContract().getDateString(employee.getContract().getEndDate())
+				.split("-")[1];
+		
+		String salary = String.valueOf(employee.getSalary(String.format("%02d", month+1)));
+
+		model.addAttribute("salary", salary);
 		model.addAttribute("contractSD", contractStartDate);
 		model.addAttribute("contractSM", contractStartMonth);
 		model.addAttribute("contractED", contractEndDate);

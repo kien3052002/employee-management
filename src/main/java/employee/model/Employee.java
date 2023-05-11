@@ -222,14 +222,18 @@ public class Employee {
 //		String contractEndMonth = this.getContract().getDateString(this.getContract().getEndDate()).split("-")[1];
 //		if (month.compareTo(contractStartMonth) >= 0 && month.compareTo(contractEndMonth) <= 0)
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MONTH, Integer.valueOf(month) - 1);
-		int maxDays = cal.getActualMaximum(Calendar.DATE);
+		cal.set(Calendar.MONTH, Integer.valueOf(month)-1);
+		int maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		for (int i = 1; i <= maxDays; i++) {
-			String date = String.valueOf(i);
-			double factor = Double.valueOf(map.get(date));
-			if (factor < 0)
-				continue;
-			salary += dailyWage * factor;
+			String date = String.format("%02d", i);
+			String factor = map.get(date);
+			if (factor.equals("1"))
+				salary += dailyWage;
+			else
+			if (factor.equals("0.5"))
+				salary += dailyWage * 0.5;
+			else
+				salary += 0;
 		}
 		return salary;
 	}
