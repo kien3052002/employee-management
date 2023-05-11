@@ -1,5 +1,6 @@
 package employee.service;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -12,4 +13,5 @@ public interface EmployeeService {
 	Employee getEmployeeById(long id);
 	void deleteEmployeeById(long id);
 	List<Employee> getEmployeesByDepartment(long id);
+	void attend(long id, String day, String month) throws FileNotFoundException;
 }
