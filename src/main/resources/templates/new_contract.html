@@ -37,7 +37,7 @@
 		<hr>
 		<h2>Save Contract</h2>
 
-		<form action="#" th:action="@{/contracts/saveContract}" th:object="${contract}" method="POST">
+		<form action="#" th:action="@{/contracts/saveContract}" th:object="${contract}" method="POST" onsubmit="checkChief()">
 			<input type="hidden" th:field="*{id}" />
 			<label for="id">Contract id</label>
 			<select name="id_contract">
@@ -53,13 +53,13 @@
 			<label for="end">End date</label>
 			<input type="date" class="form-control  mb-4 col-4" name="end" autocomplete="off" required />
 			<label for="department">Department &nbsp;</label>
-			<select name="department">
+			<select name="department" id="department" onclick="updateChiefSelect()">
 
 				<option th:each="d : ${listDepartments}" th:value="${d.getId()}" th:text="${d.getName()}"></option>
 
 			</select>
 			<label for="position">Position</label>
-			<select th:field="*{position}">
+			<select th:field="*{position}" id="position">
 				<option th:value="Employee" th:text="Employee"></option>
 				<option th:value="Chief" th:text="Chief"></option>
 			</select>
@@ -83,7 +83,7 @@
 
 
 </body>
-<script type="text/javascript">
+<script th:inline="javascript">
 	/*<![CDATA[*/
 	var form = document.querySelector('form');
 	form.addEventListener('submit', function (event) {
@@ -104,7 +104,27 @@
 			event.preventDefault();
 		}
 	});
+	function updateChiefSelect() {
+		var departments = /*[[${listDepartments}]]*/ [];
+        var selectedDepartmentId = document.getElementById("department").value;
+        var chiefSelect = document.getElementById("position");
+        var chief = /*[[${hasChief}]]*/ [];
+        var index=0;
+        while(departments[index].id!=selectedDepartmentId){
+			index++;
+		}
+		var hasChief = chief[index];
+        if (hasChief) {
+            chiefSelect.options[0].disabled = false;
+            chiefSelect.options[1].disabled = true;
+            chiefSelect.value = "employee";
+        } else {
+            chiefSelect.options[0].disabled = false;
+            chiefSelect.options[1].disabled = false;
+        }
+    }
     /*]]>*/
 </script>
+
 
 </html>
