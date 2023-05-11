@@ -70,16 +70,16 @@
 						<div class="cell"
 							th:if="${(months[k+i*7].compareTo(contractSM) >0 OR (months[k+i*7].compareTo(contractSM) ==0 AND days[k+i*7].compareTo(contractSD)>=0)) AND (months[k+i*7].compareTo(contractEM) < 0 OR (months[k+i*7].compareTo(contractEM) ==0 AND days[k+i*7].compareTo(contractED)<=0))}">
 
-							<a th:if="${months[k+i*7].compareTo(currMonth) < 0 OR (k+i*7 &lt;= maxDays AND months[k+i*7].compareTo(currMonth) == 0)}"
+							<a 	th:if="${months[k+i*7].compareTo(currMonth) == 0 AND days[k+i*7].compareTo(currDay)==0}"
 								th:href="@{/employees/attend/{id}/{day}_{month}(id=${employee.id}, day = ${days[k+i*7]}, month=${months[k+1*7]})}"><span
 									th:text="${days[k+i*7]}"></span>/<span th:text="${months[k+i*7]}"></span></a>
-							<a th:if="${months[k+i*7].compareTo(currMonth) > 0 OR (k+i*7 &gt; maxDays AND months[k+i*7].compareTo(currMonth) == 0)}"
+							<a th:if="${months[k+i*7].compareTo(currMonth) != 0 OR days[k+i*7].compareTo(currDay)!=0}"
 								style="text-decoration: none; color: black;"><span
 									th:text="${days[k+i*7]}"></span>/<span th:text="${months[k+i*7]}"></span></a>
 							<img th:src="@{/images/marked.png}" class="attend-icon"
 								th:if="${attendance[k+i*7]=='1' AND (k+i*7 &lt;= maxDays)}" />
 							<img th:src="@{/images/missed.png}" class="attend-icon" th:if="${attendance[k+i*7]=='0'}" />
-							<img th:src="@{/images/marked.png}" class="attend-icon"
+							<img th:src="@{/images/late.png}" class="attend-icon"
 								th:if="${attendance[k+i*7]=='0.5' AND (k+i*7 &lt;= maxDays)}" />
 						</div>
 						<div class="cell not-work"

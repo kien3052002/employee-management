@@ -30,12 +30,14 @@ public class ContractServiceImpl implements ContractService {
 		
 		Employee employee = contract.getEmployee();
 		HashMap<String, HashMap<String, String>> map = employee.getAttendanceMap();
-		employee.setDepartment(departmentService.getDepartmentById(contract.getDepartmentId()));;
+		employee.setDepartment(departmentService.getDepartmentById(contract.getDepartmentId()));
+		employee.setPosition(contract.getPosition());
 		try {
 			employee.setAttendanceMap(map);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		this.employeeService.saveEmployee(employee);
 		this.contractRepository.save(contract);
 	}
 
@@ -45,6 +47,8 @@ public class ContractServiceImpl implements ContractService {
 		contract.setEmployee(null);
 		Employee employee = this.getEmployee(id);
 		employee.setContract(null);
+		employee.setDepartment(null);
+		employee.setPosition("Employee");
 		employeeService.saveEmployee(employee);
 		employee.deleteAttendanceMap();
 		this.contractRepository.deleteById(id);

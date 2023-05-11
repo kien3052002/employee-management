@@ -1,18 +1,19 @@
 package employee.service;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import employee.model.Contract;
+import employee.model.Department;
 import employee.model.Employee;
 import employee.repository.EmployeeRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
+	
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
@@ -23,6 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public void saveEmployee(Employee employee) {
+		
 		this.employeeRepository.save(employee);
 	}
 

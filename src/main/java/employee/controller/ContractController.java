@@ -67,7 +67,7 @@ public class ContractController {
 	}
 
 	@PostMapping("/saveContract")
-	public String saveEmployee(@ModelAttribute("contract") Contract contract,
+	public String saveContract(@ModelAttribute("contract") Contract contract,
 			@RequestParam("id_contract") long id_contract, @RequestParam("department") long id,
 			@RequestParam("signed") String signed, @RequestParam("start") String start, @RequestParam("end") String end)
 			throws ParseException {
@@ -78,8 +78,6 @@ public class ContractController {
 		contract.setEndDate(sdf.parse(end));
 		contract.setId(id_contract);
 		contract.setEmployee(employee);
-		contract.setPosition(employee.getPosition());
-		contract.setName(employee.getFirstName() + " " + employee.getLastName());
 		contract.setDepartmentId(id);
 		if (contractService.getContractById(id_contract) != null) {
 			contractService.deleteContractById(id_contract);
@@ -91,15 +89,8 @@ public class ContractController {
 	@GetMapping("/updateContract/{id}")
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) throws ParseException {
 		Contract contract = contractService.getContractById(id);
-		Date currDate = Calendar.getInstance().getTime();
-		Date startDate = contract.getStartDate();
-		Boolean canUpdate = true;
-		if (startDate.compareTo(currDate) <= 0) {
-			canUpdate = false;
-		}
 		List<Department> departments = departmentService.getAllDepartments();
 		Department currDepartment = departmentService.getDepartmentById(contract.getDepartmentId());
-		model.addAttribute("canUpdate", canUpdate);
 		model.addAttribute("contract", contract);
 		model.addAttribute("currDepartment", currDepartment);
 		model.addAttribute("listDepartments", departments);

@@ -56,51 +56,8 @@ public class DepartmentController {
 	}
 
 	@PostMapping("/saveDepartment")
-	public String saveDepartment(@ModelAttribute("department") Department department,
-			@RequestParam(name = "toRemove", required = false) String toRemove,
-			@RequestParam(name = "toAdd", required = false) String toAdd,
-			@RequestParam(name = "setChief", required = false) String chiefId) {
-		List<Employee> removeList = toEmpList(toRemove);
-		List<Employee> addList = toEmpList(toAdd);
-		for (Employee e : removeList) {
-			e.setDepartment(null);
-			e.setPosition("Employee");
-			employeeService.saveEmployee(e);
-		}
-		for (Employee e : addList) {
-			e.setDepartment(department);
-			employeeService.saveEmployee(e);
-		}
-		if (chiefId == null)
-			chiefId = "0";
-		Employee currChief = departmentService.getChief(department.getId());
-		Employee chief = employeeService.getEmployeeById(Long.valueOf(chiefId));
-		if (currChief != null) {
-			currChief.setPosition("Employee");
-			employeeService.saveEmployee(currChief);
-		}
-		if (chief != null) {
-			Contract contract;
-			if (currChief != null) {
-				Long currChiefId = currChief.getId();
-				if(contractService.getContractById((currChiefId))!=null) {
-					contract = contractService.getContractById((currChiefId));
-					contract.setPosition("Employee");
-					contract.setDepartmentId(department.getId());
-					contractService.saveContract(contract);
-				}
-			}
-			if (chief.getDepartment() != null && chief.getDepartment().equals(department)) {
-				chief.setPosition("Chief");
-				if(contractService.getContractById(Long.parseLong(chiefId))!=null) {
-					contract = contractService.getContractById(Long.parseLong(chiefId));
-					contract.setPosition("Chief");
-					contract.setDepartmentId(department.getId());
-					contractService.saveContract(contract);
-				}
-				employeeService.saveEmployee(chief);
-			}
-		}
+	public String saveDepartment(@ModelAttribute("department") Department department) {
+		
 		departmentService.saveDepartment(department);
 		return "redirect:/departments";
 	}
@@ -109,27 +66,16 @@ public class DepartmentController {
 	public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
 
 		Department department = departmentService.getDepartmentById(id);
-		List<Employee> inDepartment = departmentService.getEmployees(id);
-		List<Employee> available = new ArrayList<Employee>();
-		List<Employee> listEmployee = employeeService.getAllEmployees();
-		Employee chief = departmentService.getChief(id);
-		for (Employee e : listEmployee) {
-			if (e.getDepartment() == null)
-				available.add(e);
-		}
-		model.addAttribute("chief", chief);
-		model.addAttribute("inDepartment", inDepartment);
-		model.addAttribute("available", available);
 		model.addAttribute("department", department);
 		return "update_department";
 	}
 
 	@GetMapping("/deleteDepartment/{id}")
 	public String deleteDepartment(@PathVariable(value = "id") long id) {
-		List<Employee> employees = departmentService.getEmployees(id);
-		for (Employee employee : employees) {
-			employee.setDepartment(null);
-			employeeService.saveEmployee(employee);
+		List<Contract> contracts = contractService.getAllContracts();
+		for (Contract c : contracts) {
+			if(c.getDepartmentId() == id)
+				contractService.deleteContractById(c.getId());
 		}
 		this.departmentService.deleteDepartment(id);
 		return "redirect:/departments";
