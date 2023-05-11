@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -152,11 +154,38 @@ public class Employee {
 			cal.set(Calendar.MONTH, month - 1);
 			int maxDays = cal.getActualMaximum(Calendar.DATE);
 			for (int day = 1; day <= maxDays; day++) {
-				mapDays.put(String.format("%02d", day), "-1");
+				cal.set(Calendar.DATE, day);
+				int wd = cal.get(Calendar.DAY_OF_WEEK);
+				if (wd == 1 || wd == 7) {
+					mapDays.put(String.format("%02d", day), "-2");
+				} else
+					mapDays.put(String.format("%02d", day), "-1");
 			}
 			map.put(String.format("%02d", month), mapDays);
 		}
 		return map;
+	}
+
+	public void attendanceMapUpdate() throws FileNotFoundException {
+		Date start = this.getContract().getStartDate();
+		Date d = Calendar.getInstance().getTime();
+		LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate currDate = d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		HashMap<String, HashMap<String, String>> map = this.getAttendanceMap();
+		while (startDate.isBefore(currDate)) {
+			String month = startDate.toString().split("-")[1];
+			String day = startDate.toString().split("-")[2];
+			HashMap<String, String> mapMonth = map.get(month);
+			if (mapMonth.get(day).equals("-1")) {
+				mapMonth.put(day, "0");
+				System.out.println(-1);
+			}
+			map.put(month, mapMonth);
+			this.setAttendanceMap(map);
+			startDate = startDate.plusDays(1);
+
+		}
+
 	}
 
 	public void deleteAttendanceMap() {
@@ -175,9 +204,37 @@ public class Employee {
 		else
 			return false;
 	}
-	
+
 	public boolean contracted() {
-		if(this.getContract()==null) return false;
-		else return true;
+		if (this.getContract() == null)
+			return false;
+		else
+			return true;
+	}
+
+	public long getSalary(String month) {
+		long dailyWage = this.getContract().getDailyWage();
+		long salary = 0;
+		HashMap<String, String> map = this.getAttendanceMap().get(month);
+//		String contractStartDate = this.getContract().getDateString(this.getContract().getStartDate()).split("-")[2];
+//		String contractStartMonth = this.getContract().getDateString(this.getContract().getStartDate()).split("-")[1];
+//		String contractEndDate = this.getContract().getDateString(this.getContract().getEndDate()).split("-")[2];
+//		String contractEndMonth = this.getContract().getDateString(this.getContract().getEndDate()).split("-")[1];
+//		if (month.compareTo(contractStartMonth) >= 0 && month.compareTo(contractEndMonth) <= 0)
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, Integer.valueOf(month)-1);
+		int maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		for (int i = 1; i <= maxDays; i++) {
+			String date = String.format("%02d", i);
+			String factor = map.get(date);
+			if (factor.equals("1"))
+				salary += dailyWage;
+			else
+			if (factor.equals("0.5"))
+				salary += dailyWage * 0.5;
+			else
+				salary += 0;
+		}
+		return salary;
 	}
 }

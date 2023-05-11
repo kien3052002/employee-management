@@ -36,7 +36,7 @@
 
 	<div class="container my-2">
 		<h1>Contracts List</h1>
-		<a th:href="@{contracts/newContract}" class="btn btn-primary btn-sm mb-3"> Add
+		<a th:href="@{contracts/newContract}" class="btn btn-primary btn-sm mb-3" sec:authorize="hasRole('ADMIN')"> Add
 			Contract </a>
 		<br>
 		<br>
@@ -52,7 +52,7 @@
 					<th>
 						Department
 					</th>
-					<th sec:authorize="hasRole('ADMIN')"> Actions </th>
+					<th> Actions </th>
 				</tr>
 			</thead>
 			<tbody>
