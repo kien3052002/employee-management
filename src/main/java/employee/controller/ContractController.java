@@ -101,13 +101,13 @@ public class ContractController {
 		Contract contract = contractService.getContractById(id);
 		List<Department> departments = departmentService.getAllDepartments();
 		Department currDepartment = departmentService.getDepartmentById(contract.getDepartmentId());
-		List<Boolean> hasChief=new ArrayList<>();
+		List<Long> hasChief=new ArrayList<>();
 		for(Department d: departments) {
 			if(departmentService.getChief(d.getId())!=null) {
-				hasChief.add(true);
+				hasChief.add(departmentService.getChief(d.getId()).getId());
 			}
 			else {
-				hasChief.add(false);
+				hasChief.add(-1L);
 			}
 		}
 		model.addAttribute("contract", contract);
