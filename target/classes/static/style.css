@@ -63,23 +63,21 @@ input[type= text], input[type=email], input[type=date] {
 
 .menu{
 	padding: 50px;
-	border-radius: 30px;
-	margin: auto;
-	margin-top: 100px;
+	
 	display: table;
 	width: 900px;
-	height: 600px;
-	background-color: white;
+	height: 715px;
+	background-color:ghostwhite;
 	
 }
 
 .menu-btn{
-	margin: auto;
+	margin: 50px ;
 	font-size: 25px;
 	font-weight: bold;
 	
 	line-height: 100px;
-	height: 100px;
+	height: 150px;
 	width: 300px;
 }
 
@@ -89,3 +87,4 @@ input[type= text], input[type=email], input[type=date] {
 	width: 1700px;
 	opacity: 0.5;
 }
+
