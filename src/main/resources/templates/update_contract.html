@@ -41,7 +41,7 @@
 
 			<input type="hidden" th:field="*{id}" />
 			<label for="id_contract">Contract id</label>
-			<select name="id_contract">
+			<select name="id_contract" id="id_contract">
 				<option th:value="${contract.getId()}" th:text="${contract.getId()}"></option>
 			</select>
 			<br>
@@ -107,6 +107,7 @@
 		}
 	});
 	function updateChiefSelect() {
+		var currContractId = document.getElementById("id_contract").value;
 		var departments = /*[[${listDepartments}]]*/ [];
         var selectedDepartmentId = document.getElementById("department").value;
         var chiefSelect = document.getElementById("position");
@@ -116,7 +117,7 @@
 			index++;
 		}
 		var hasChief = chief[index];
-        if (hasChief) {
+        if (hasChief!=currContractId) {
             chiefSelect.options[0].disabled = false;
             chiefSelect.options[1].disabled = true;
             chiefSelect.value = "employee";
